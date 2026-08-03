@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		407BAE56301E581700822ECD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 407BAE1A301E581500822ECD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 407BAE21301E581500822ECD;
+			remoteInfo = "Air Danger";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		407BAE22301E581500822ECD /* Air Danger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Air Danger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		407BAE22301E581500822ECD /* AirDanger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirDanger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		407BAE51301E581700822ECD /* AirDangerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirDangerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = "Air Danger";
 			sourceTree = "<group>";
 		};
+		407BAE52301E581700822ECD /* AirDangerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AirDangerTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		407BAE1F301E581500822ECD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		407BAE54301E581700822ECD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				407BAE24301E581500822ECD /* Air Danger */,
+				407BAE52301E581700822ECD /* AirDangerTests */,
 				407BAE23301E581500822ECD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +64,8 @@
 		407BAE23301E581500822ECD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				407BAE22301E581500822ECD /* Air Danger.app */,
+				407BAE22301E581500822ECD /* AirDanger.app */,
+				407BAE51301E581700822ECD /* AirDangerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,8 +92,31 @@
 			packageProductDependencies = (
 			);
 			productName = "Air Danger";
-			productReference = 407BAE22301E581500822ECD /* Air Danger.app */;
+			productReference = 407BAE22301E581500822ECD /* AirDanger.app */;
 			productType = "com.apple.product-type.application";
+		};
+		407BAE50301E581700822ECD /* AirDangerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 407BAE58301E581700822ECD /* Build configuration list for PBXNativeTarget "AirDangerTests" */;
+			buildPhases = (
+				407BAE53301E581700822ECD /* Sources */,
+				407BAE54301E581700822ECD /* Frameworks */,
+				407BAE55301E581700822ECD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				407BAE57301E581700822ECD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				407BAE52301E581700822ECD /* AirDangerTests */,
+			);
+			name = AirDangerTests;
+			packageProductDependencies = (
+			);
+			productName = AirDangerTests;
+			productReference = 407BAE51301E581700822ECD /* AirDangerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -83,13 +131,17 @@
 					407BAE21301E581500822ECD = {
 						CreatedOnToolsVersion = 26.2;
 					};
+					407BAE50301E581700822ECD = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 407BAE21301E581500822ECD;
+					};
 				};
 			};
 			buildConfigurationList = 407BAE1D301E581500822ECD /* Build configuration list for PBXProject "Air Danger" */;
-			developmentRegion = en;
+			developmentRegion = uk;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				uk,
 				Base,
 			);
 			mainGroup = 407BAE19301E581500822ECD;
@@ -100,12 +152,20 @@
 			projectRoot = "";
 			targets = (
 				407BAE21301E581500822ECD /* Air Danger */,
+				407BAE50301E581700822ECD /* AirDangerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		407BAE20301E581500822ECD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		407BAE55301E581700822ECD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +182,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		407BAE53301E581700822ECD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		407BAE57301E581700822ECD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 407BAE21301E581500822ECD /* Air Danger */;
+			targetProxy = 407BAE56301E581700822ECD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		407BAE2B301E581700822ECD /* Debug */ = {
@@ -251,30 +326,39 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SupportFiles/AirDanger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SupportFiles/Info-Debug.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Air Danger";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "comeodore.Air-Danger";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = comeodore.airdanger;
+				PRODUCT_NAME = AirDanger;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -283,30 +367,78 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SupportFiles/AirDanger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Air Danger";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "comeodore.Air-Danger";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = comeodore.airdanger;
+				PRODUCT_NAME = AirDanger;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		407BAE59301E581700822ECD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = VBV72WF24P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = comeodore.airdangerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AirDanger.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AirDanger";
+			};
+			name = Debug;
+		};
+		407BAE5A301E581700822ECD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = VBV72WF24P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = comeodore.airdangerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AirDanger.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AirDanger";
 			};
 			name = Release;
 		};
@@ -327,6 +459,15 @@
 			buildConfigurations = (
 				407BAE2E301E581700822ECD /* Debug */,
 				407BAE2F301E581700822ECD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		407BAE58301E581700822ECD /* Build configuration list for PBXNativeTarget "AirDangerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				407BAE59301E581700822ECD /* Debug */,
+				407BAE5A301E581700822ECD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
