@@ -11,12 +11,6 @@ struct APIClient {
         try await send(request)
     }
 
-    func unregister(token: String) async throws {
-        var request = makeRequest(path: "/devices/\(token)")
-        request.httpMethod = "DELETE"
-        try await send(request)
-    }
-
     @discardableResult
     private func send(_ request: URLRequest) async throws -> Data {
         let (data, response) = try await URLSession.shared.data(for: request)
