@@ -1,0 +1,95 @@
+require "open3"
+
+%w[LANG LC_ALL].each do |var|
+  ENV[var] = "en_US.UTF-8" unless ENV[var].to_s.match?(/UTF-8/i)
+end
+Encoding.default_external = Encoding::UTF_8
+
+default_platform(:ios)
+
+REPO_ROOT = File.expand_path("..", __dir__)
+PROJECT = File.join(REPO_ROOT, "Air Danger.xcodeproj")
+SCHEME = "Air Danger"
+APP_IDENTIFIER = "comeodore.airdanger"
+TEAM_ID = "VBV72WF24P"
+ARCHIVE_DIR = File.join(REPO_ROOT, "build", "appstore")
+
+platform :ios do
+  desc "Archive a signed Release build and upload it to TestFlight (internal). Options: build, version"
+  lane :beta do |options|
+    key = asc_api_key
+    settings = []
+    settings << "CURRENT_PROJECT_VERSION=#{options[:build]}" if options[:build]
+    settings << "MARKETING_VERSION=#{options[:version]}" if options[:version]
+    ipa = build_app(
+      project: PROJECT,
+      scheme: SCHEME,
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: ARCHIVE_DIR,
+      derived_data_path: File.join(REPO_ROOT, "build", "appstore-dd"),
+      buildlog_path: File.join(REPO_ROOT, "build", "logs"),
+      clean: true,
+      include_symbols: true,
+      xcargs: (provisioning_xcargs + settings).join(" "),
+      export_options: {
+        teamID: TEAM_ID,
+        signingStyle: "automatic",
+        uploadSymbols: true
+      }
+    )
+    upload_to_testflight(
+      api_key: key,
+      ipa: ipa,
+      app_identifier: APP_IDENTIFIER,
+      changelog: default_changelog,
+      skip_waiting_for_build_processing: true
+    )
+    UI.success("Uploaded #{ipa} to TestFlight (internal)")
+  end
+end
+
+def asc_api_key
+  key_id = ENV["ASC_KEY_ID"].to_s
+  issuer_id = ENV["ASC_ISSUER_ID"].to_s
+  if key_id.empty? && issuer_id.empty?
+    UI.important("No ASC_KEY_ID / ASC_ISSUER_ID — falling back to interactive Apple ID sign-in (2FA prompts).")
+    return nil
+  end
+  if key_id.empty? || issuer_id.empty?
+    missing = key_id.empty? ? "ASC_KEY_ID" : "ASC_ISSUER_ID"
+    UI.user_error!("#{missing} is missing from fastlane/.env.appstore — half-configured API key, refusing to fall back to Apple ID sign-in.")
+  end
+
+  path = ENV["ASC_KEY_PATH"].to_s
+  path = File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{key_id}.p8") if path.empty?
+  UI.user_error!("App Store Connect key not found at #{path}") unless File.exist?(path)
+
+  app_store_connect_api_key(
+    key_id: key_id,
+    issuer_id: issuer_id,
+    key_filepath: path,
+    duration: 1200,
+    in_house: false
+  )
+end
+
+def provisioning_xcargs
+  args = ["-allowProvisioningUpdates"]
+  key_id = ENV["ASC_KEY_ID"].to_s
+  issuer_id = ENV["ASC_ISSUER_ID"].to_s
+  return args if key_id.empty? || issuer_id.empty?
+
+  path = ENV["ASC_KEY_PATH"].to_s
+  path = File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{key_id}.p8") if path.empty?
+  args + [
+    "-authenticationKeyPath", path,
+    "-authenticationKeyID", key_id,
+    "-authenticationKeyIssuerID", issuer_id
+  ]
+end
+
+def default_changelog
+  subject, = Open3.capture2("git", "-C", REPO_ROOT, "log", "-1", "--pretty=%s")
+  subject.strip
+end

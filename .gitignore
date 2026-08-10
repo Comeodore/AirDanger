@@ -8,3 +8,6 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 .claude/
+fastlane/.env.appstore
+fastlane/README.md
+fastlane/report.xml
