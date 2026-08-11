@@ -14,14 +14,14 @@ struct NotificationLogicCard: View {
                 icon: "speaker.wave.3.fill",
                 tint: .red,
                 title: "Підтверджений пуск",
-                detail: "Гучний сигнал (гучність дзвінка)"
+                detail: "Гучний сигнал — на рівні гучності дзвінка"
             )
             divider
             row(
                 icon: "moon.fill",
                 tint: .indigo,
                 title: "«Не турбувати» і фокусування",
-                detail: "Сповіщення проходять стандартно"
+                detail: "Сповіщення надходять за стандартних налаштувань iOS"
             )
         }
         .background(
@@ -34,7 +34,6 @@ struct NotificationLogicCard: View {
         Rectangle()
             .fill(Color(.separator))
             .frame(height: 0.5)
-            .padding(.leading, 58)
     }
 
     private func row(icon: String, tint: Color, title: String, detail: String) -> some View {
