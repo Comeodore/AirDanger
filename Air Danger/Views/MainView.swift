@@ -15,6 +15,7 @@ struct MainView: View {
     var body: some View {
         VStack(spacing: 12) {
             statusCard
+            NotificationLogicCard()
             UnofficialSourceBanner()
         }
         .padding(.horizontal, 16)
