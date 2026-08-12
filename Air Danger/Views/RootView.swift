@@ -15,9 +15,11 @@ struct RootView: View {
         }
         .task(id: "\(scenePhase)-\(model.onboarded)") {
             guard scenePhase == .active, model.onboarded else { return }
-            async let status: Void = model.refreshNotificationStatus()
-            async let alerts: Void = model.refreshAlerts()
-            _ = await (status, alerts)
+            await model.refreshNotificationStatus()
+            while !Task.isCancelled {
+                await model.refreshAlerts()
+                try? await Task.sleep(for: .seconds(30))
+            }
         }
     }
 }

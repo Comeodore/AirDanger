@@ -18,6 +18,13 @@ struct NotificationLogicCard: View {
             )
             divider
             row(
+                icon: "clock.arrow.circlepath",
+                tint: .teal,
+                title: "Хвилі, а не кожна ракета",
+                detail: "Повтори тієї самої загрози впродовж кількох хвилин не дублюються сповіщеннями, а її посилення — сповіщається одразу"
+            )
+            divider
+            row(
                 icon: "moon.fill",
                 tint: .indigo,
                 title: "«Не турбувати» і фокусування",

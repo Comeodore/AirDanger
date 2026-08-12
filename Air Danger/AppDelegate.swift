@@ -25,7 +25,10 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
-        [.banner, .sound, .list]
+        if notification.request.content.userInfo["test"] == nil {
+            Task { await AppModel.shared.refreshAlerts() }
+        }
+        return [.banner, .sound, .list]
     }
 
     func userNotificationCenter(
