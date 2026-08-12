@@ -21,7 +21,7 @@ struct NotificationLogicCard: View {
                 icon: "moon.fill",
                 tint: .indigo,
                 title: "«Не турбувати» і фокусування",
-                detail: "Сповіщення надходять за стандартних налаштувань iOS"
+                detail: "Сповіщення надходять як термінові й за стандартних налаштувань iOS пробиваються крізь ці режими"
             )
         }
         .background(
