@@ -24,6 +24,7 @@ struct MainView: View {
             .padding(.top, 4)
             .padding(.bottom, 16)
         }
+        .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .animation(.default, value: model.notificationsEnabled)
     }

@@ -123,6 +123,7 @@ struct AlertsListView: View {
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .refreshable { await model.refreshAlerts() }
         .navigationTitle("Останні загрози")
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             if model.alertsFeed == .loading {
                 await model.refreshAlerts()

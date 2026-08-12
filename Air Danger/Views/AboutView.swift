@@ -24,6 +24,7 @@ struct AboutView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
         }
+        .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .navigationTitle("Про застосунок")
         .navigationBarTitleDisplayMode(.inline)
