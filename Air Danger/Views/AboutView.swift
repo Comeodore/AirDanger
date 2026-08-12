@@ -75,9 +75,7 @@ struct AboutView: View {
     private var linksCard: some View {
         VStack(spacing: 0) {
             linkRow("Політика конфіденційності", url: "https://airdanger.comeodore.services/privacy")
-            Rectangle()
-                .fill(Color(.separator))
-                .frame(height: 0.5)
+            HairlineDivider()
             linkRow("Підтримка", url: "https://airdanger.comeodore.services/support")
         }
         .background(

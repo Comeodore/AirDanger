@@ -31,9 +31,7 @@ struct NotificationLogicCard: View {
     }
 
     private var divider: some View {
-        Rectangle()
-            .fill(Color(.separator))
-            .frame(height: 0.5)
+        HairlineDivider()
     }
 
     private func row(icon: String, tint: Color, title: String, detail: String) -> some View {

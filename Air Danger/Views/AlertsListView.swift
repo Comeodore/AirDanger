@@ -43,7 +43,7 @@ struct AlertRow: View {
     var textLineLimit: Int? = 3
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(spacing: 12) {
             RoundedRectangle(cornerRadius: 9, style: .continuous)
                 .fill(alert.tint.opacity(0.16))
                 .frame(width: 30, height: 30)
@@ -105,9 +105,7 @@ struct AlertsListView: View {
                         VStack(spacing: 0) {
                             ForEach(Array(alerts.enumerated()), id: \.element.id) { index, alert in
                                 if index > 0 {
-                                    Rectangle()
-                                        .fill(Color(.separator))
-                                        .frame(height: 0.5)
+                                    HairlineDivider()
                                 }
                                 AlertRow(alert: alert, now: context.date, textLineLimit: nil)
                             }

@@ -92,9 +92,7 @@ struct MainView: View {
     }
 
     private var divider: some View {
-        Rectangle()
-            .fill(Color(.separator))
-            .frame(height: 0.5)
+        HairlineDivider()
     }
 
     private var bellBadge: some View {

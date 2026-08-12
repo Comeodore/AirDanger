@@ -13,6 +13,16 @@ extension Color {
     }
 }
 
+struct HairlineDivider: View {
+    @Environment(\.displayScale) private var scale
+
+    var body: some View {
+        Rectangle()
+            .fill(Color(.separator))
+            .frame(height: 1 / max(scale, 1))
+    }
+}
+
 enum Palette {
     static let amberIcon = adaptive(dark: Color(hex: 0xFF9F0A), light: Color(hex: 0xC97A00))
     static let amberTitle = adaptive(dark: Color(hex: 0xFFB340), light: Color(hex: 0x8F5100))
