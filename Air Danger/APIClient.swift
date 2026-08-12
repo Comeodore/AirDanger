@@ -3,12 +3,37 @@ import Foundation
 struct APIClient {
     var baseURL = AppConfig.baseURL
 
+    private static let decoder: JSONDecoder = {
+        let plain = ISO8601DateFormatter()
+        let fractional = ISO8601DateFormatter()
+        fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .custom { decoder in
+            let container = try decoder.singleValueContainer()
+            let raw = try container.decode(String.self)
+            guard let date = plain.date(from: raw) ?? fractional.date(from: raw) else {
+                throw DecodingError.dataCorruptedError(
+                    in: container, debugDescription: "unrecognized timestamp \(raw)"
+                )
+            }
+            return date
+        }
+        return decoder
+    }()
+
     func register(_ registration: DeviceRegistration) async throws {
         var request = makeRequest(path: "/devices")
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try JSONEncoder().encode(registration)
         try await send(request)
+    }
+
+    func alerts(limit: Int = 50) async throws -> [ThreatAlert] {
+        var request = makeRequest(path: "/alerts")
+        request.url?.append(queryItems: [URLQueryItem(name: "limit", value: String(limit))])
+        let data = try await send(request)
+        return try Self.decoder.decode(AlertsResponse.self, from: data).alerts
     }
 
     @discardableResult

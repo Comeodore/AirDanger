@@ -4,6 +4,12 @@ import os
 import UIKit
 import UserNotifications
 
+enum AlertsFeed: Equatable {
+    case loading
+    case loaded([ThreatAlert])
+    case unavailable
+}
+
 @Observable
 final class AppModel {
     static let shared = AppModel()
@@ -28,6 +34,40 @@ final class AppModel {
 
     var notificationsEnabled: Bool {
         didSet { defaults.set(notificationsEnabled, forKey: "notificationsEnabled") }
+    }
+
+    var alertsFeed: AlertsFeed = .loading
+
+    func refreshAlerts() async {
+        do {
+            alertsFeed = .loaded(try await api.alerts())
+        } catch {
+            logger.error("alerts refresh failed: \(error)")
+            if case .loaded = alertsFeed {} else {
+                alertsFeed = .unavailable
+            }
+        }
+    }
+
+    func sendTestNotification() async {
+        let center = UNUserNotificationCenter.current()
+        if await center.notificationSettings().authorizationStatus == .notDetermined {
+            _ = try? await center.requestAuthorization(options: [.alert, .sound, .badge])
+            await refreshNotificationStatus()
+        }
+        let content = UNMutableNotificationContent()
+        content.title = "Тестове сповіщення"
+        content.body = "Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка."
+        content.sound = UNNotificationSound(named: UNNotificationSoundName("alert.caf"))
+        content.userInfo = ["test": true]
+        let request = UNNotificationRequest(
+            identifier: "test-notification", content: content, trigger: nil
+        )
+        do {
+            try await center.add(request)
+        } catch {
+            logger.error("test notification failed: \(error)")
+        }
     }
 
     func enableNotifications() async {

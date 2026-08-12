@@ -8,7 +8,7 @@ struct AirDangerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            RootView()
                 .environment(model)
                 .fullScreenCover(isPresented: .constant(!onboarded)) {
                     OnboardingView()

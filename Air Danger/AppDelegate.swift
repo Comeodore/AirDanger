@@ -32,6 +32,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
     ) async {
+        guard response.notification.request.content.userInfo["test"] == nil else { return }
         let source = response.notification.request.content.userInfo["source"] as? String
         let channel = (source?.isEmpty == false) ? source! : AppConfig.channel
         await openChannel(channel)

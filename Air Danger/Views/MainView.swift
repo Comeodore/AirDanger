@@ -2,7 +2,8 @@ import SwiftUI
 
 struct MainView: View {
     @Environment(AppModel.self) private var model
-    @Environment(\.scenePhase) private var scenePhase
+
+    @State private var testSent = false
 
     private var settingsURL: URL {
         URL(string: UIApplication.openNotificationSettingsURLString)!
@@ -13,20 +14,18 @@ struct MainView: View {
     }
 
     var body: some View {
-        VStack(spacing: 12) {
-            statusCard
-            NotificationLogicCard()
-            UnofficialSourceBanner()
+        ScrollView {
+            VStack(spacing: 12) {
+                statusCard
+                NotificationLogicCard()
+                UnofficialSourceBanner()
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 4)
+            .padding(.bottom, 16)
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 4)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .animation(.default, value: model.notificationsEnabled)
-        .task(id: "\(scenePhase)-\(model.onboarded)") {
-            guard scenePhase == .active, model.onboarded else { return }
-            await model.refreshNotificationStatus()
-        }
     }
 
     private var statusCard: some View {
@@ -42,9 +41,7 @@ struct MainView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 13)
 
-            Rectangle()
-                .fill(Color(.separator))
-                .frame(height: 0.5)
+            divider
 
             Link(destination: settingsURL) {
                 HStack(spacing: 12) {
@@ -61,11 +58,43 @@ struct MainView: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+
+            divider
+
+            Button {
+                guard !testSent else { return }
+                Task {
+                    await model.sendTestNotification()
+                    withAnimation { testSent = true }
+                    try? await Task.sleep(for: .seconds(2.5))
+                    withAnimation { testSent = false }
+                }
+            } label: {
+                HStack(spacing: 12) {
+                    Text("Тестове сповіщення")
+                        .font(.body)
+                        .foregroundStyle(Color.accentColor)
+                    Spacer(minLength: 0)
+                    Image(systemName: testSent ? "checkmark.circle.fill" : "bell.badge")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(testSent ? Color.green : Color(.tertiaryLabel))
+                }
+                .padding(.horizontal, 16)
+                .frame(minHeight: 48)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
         .background(
             Color(.secondarySystemGroupedBackground),
             in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
         )
+    }
+
+    private var divider: some View {
+        Rectangle()
+            .fill(Color(.separator))
+            .frame(height: 0.5)
     }
 
     private var bellBadge: some View {
@@ -83,14 +112,14 @@ struct MainView: View {
 private struct PulsingDot: View {
     let color: Color
 
-    @State private var dimmed = false
-
     var body: some View {
         Circle()
             .fill(color)
             .frame(width: 8, height: 8)
-            .opacity(dimmed ? 0.4 : 1)
-            .animation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true), value: dimmed)
-            .onAppear { dimmed = true }
+            .phaseAnimator([1.0, 0.4]) { dot, phase in
+                dot.opacity(phase)
+            } animation: { _ in
+                .easeInOut(duration: 1.6)
+            }
     }
 }
