@@ -66,11 +66,19 @@ final class AppModel {
     }
 
     func syncPrefs() async {
-        guard defaults.bool(forKey: "prefsDirty"), let token = deviceToken else { return }
+        guard defaults.bool(forKey: "prefsDirty"),
+              defaults.bool(forKey: "deviceRegistered"),
+              let token = deviceToken else { return }
         do {
             try await api.updateDevice(token: token, warnings: warningsEnabled, sound: alertSound)
             defaults.set(false, forKey: "prefsDirty")
             logger.info("device prefs synced")
+        } catch APIError.status(404) {
+            logger.warning("prefs sync got 404, re-registering device")
+            defaults.set(false, forKey: "deviceRegistered")
+            await MainActor.run {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
         } catch {
             logger.error("prefs sync failed: \(error)")
         }
@@ -172,9 +180,11 @@ final class AppModel {
         deviceToken = token
         do {
             try await api.register(registrationBody(token: token))
+            defaults.set(true, forKey: "deviceRegistered")
             logger.info("device registered")
             await syncPrefs()
         } catch {
+            defaults.set(false, forKey: "deviceRegistered")
             logger.error("device registration failed: \(error)")
         }
     }

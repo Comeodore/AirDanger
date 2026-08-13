@@ -1,5 +1,9 @@
 import Foundation
 
+enum APIError: Error, Equatable {
+    case status(Int)
+}
+
 struct APIClient {
     var baseURL = AppConfig.baseURL
 
@@ -53,8 +57,11 @@ struct APIClient {
     @discardableResult
     private func send(_ request: URLRequest) async throws -> Data {
         let (data, response) = try await URLSession.shared.data(for: request)
-        guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+        guard let http = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
+        }
+        guard (200..<300).contains(http.statusCode) else {
+            throw APIError.status(http.statusCode)
         }
         return data
     }
