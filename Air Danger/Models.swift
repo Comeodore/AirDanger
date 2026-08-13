@@ -2,6 +2,8 @@ import Foundation
 
 struct DeviceRegistration: Codable, Equatable {
     let token: String
+    let warnings: Bool
+    let sound: String
 }
 
 struct DevicePrefs: Codable, Equatable {

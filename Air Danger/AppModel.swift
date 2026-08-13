@@ -181,15 +181,18 @@ final class AppModel {
         do {
             try await api.register(registrationBody(token: token))
             defaults.set(true, forKey: "deviceRegistered")
+            defaults.set(false, forKey: "prefsDirty")
             logger.info("device registered")
-            await syncPrefs()
-        } catch {
+        } catch let error as APIError {
             defaults.set(false, forKey: "deviceRegistered")
+            logger.error("device registration rejected: \(String(describing: error))")
+        } catch {
             logger.error("device registration failed: \(error)")
+            await syncPrefs()
         }
     }
 
     func registrationBody(token: String) -> DeviceRegistration {
-        DeviceRegistration(token: token)
+        DeviceRegistration(token: token, warnings: warningsEnabled, sound: alertSound)
     }
 }
