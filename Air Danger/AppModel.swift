@@ -27,6 +27,8 @@ final class AppModel {
 
     private init() {
         notificationsEnabled = defaults.object(forKey: "notificationsEnabled") as? Bool ?? true
+        warningsEnabled = defaults.object(forKey: "warningsEnabled") as? Bool ?? true
+        alertSound = defaults.string(forKey: "alertSound") ?? "alert.caf"
     }
 
     var onboarded: Bool {
@@ -41,6 +43,37 @@ final class AppModel {
 
     var notificationsEnabled: Bool {
         didSet { defaults.set(notificationsEnabled, forKey: "notificationsEnabled") }
+    }
+
+    var warningsEnabled: Bool {
+        didSet { defaults.set(warningsEnabled, forKey: "warningsEnabled") }
+    }
+
+    var alertSound: String {
+        didSet { defaults.set(alertSound, forKey: "alertSound") }
+    }
+
+    func setWarnings(_ enabled: Bool) async {
+        warningsEnabled = enabled
+        defaults.set(true, forKey: "prefsDirty")
+        await syncPrefs()
+    }
+
+    func setSound(_ file: String) async {
+        alertSound = file
+        defaults.set(true, forKey: "prefsDirty")
+        await syncPrefs()
+    }
+
+    func syncPrefs() async {
+        guard defaults.bool(forKey: "prefsDirty"), let token = deviceToken else { return }
+        do {
+            try await api.updateDevice(token: token, warnings: warningsEnabled, sound: alertSound)
+            defaults.set(false, forKey: "prefsDirty")
+            logger.info("device prefs synced")
+        } catch {
+            logger.error("prefs sync failed: \(error)")
+        }
     }
 
     var alertsFeed: AlertsFeed = .loading
@@ -105,7 +138,7 @@ final class AppModel {
         let content = UNMutableNotificationContent()
         content.title = "Тестове сповіщення"
         content.body = "Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка."
-        content.sound = UNNotificationSound(named: UNNotificationSoundName("alert.caf"))
+        content.sound = UNNotificationSound(named: UNNotificationSoundName(alertSound))
         content.userInfo = ["test": true]
         let request = UNNotificationRequest(
             identifier: "test-notification", content: content, trigger: nil
@@ -140,6 +173,7 @@ final class AppModel {
         do {
             try await api.register(registrationBody(token: token))
             logger.info("device registered")
+            await syncPrefs()
         } catch {
             logger.error("device registration failed: \(error)")
         }

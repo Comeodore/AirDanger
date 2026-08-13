@@ -4,6 +4,13 @@ struct NotificationLogicCard: View {
     var body: some View {
         VStack(spacing: 0) {
             row(
+                icon: "antenna.radiowaves.left.and.right",
+                tint: Palette.blueDeep,
+                title: "Моніторинг 24/7",
+                detail: "Система цілодобово розпізнає тип і рівень загрози в повідомленнях моніторингових каналів і відсіює все, що не стосується Києва"
+            )
+            divider
+            row(
                 icon: "bell.and.waves.left.and.right",
                 tint: Palette.amberIcon,
                 title: "Попередження про загрозу",

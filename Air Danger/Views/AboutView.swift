@@ -11,12 +11,17 @@ struct AboutView: View {
         ScrollView {
             VStack(spacing: 12) {
                 header
-                section("Важливо") {
-                    textCard("Сповіщення можуть запізнюватися або не надходити — не покладайтеся на застосунок як на єдине джерело інформації про повітряну загрозу.")
-                }
+                NotificationLogicCard()
                 section("Зв’язок") {
                     linksCard
                 }
+                Text("Сповіщення можуть запізнюватися або не надходити — не покладайтеся на застосунок як на єдине джерело інформації про повітряну загрозу.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 2)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)

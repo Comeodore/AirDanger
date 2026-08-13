@@ -29,6 +29,16 @@ struct APIClient {
         try await send(request)
     }
 
+    func updateDevice(token: String, warnings: Bool, sound: String) async throws {
+        var request = makeRequest(path: "/devices/\(token)")
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(
+            DevicePrefs(warnings: warnings, sound: sound)
+        )
+        try await send(request)
+    }
+
     func alerts(limit: Int = 50, before: Int? = nil) async throws -> [ThreatAlert] {
         var request = makeRequest(path: "/alerts")
         var query = [URLQueryItem(name: "limit", value: String(limit))]

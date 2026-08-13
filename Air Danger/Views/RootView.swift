@@ -17,6 +17,7 @@ struct RootView: View {
         .task(id: "\(scenePhase)-\(model.onboarded)") {
             guard scenePhase == .active, model.onboarded else { return }
             await model.refreshNotificationStatus()
+            await model.syncPrefs()
             while !Task.isCancelled {
                 await model.refreshAlerts()
                 try? await Task.sleep(for: .seconds(30))

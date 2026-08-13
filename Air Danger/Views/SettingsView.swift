@@ -18,6 +18,7 @@ struct SettingsView: View {
             VStack(spacing: 12) {
                 UnofficialSourceBanner()
                 statusCard
+                prefsCard
                 infoCard
             }
             .padding(.horizontal, 16)
@@ -94,16 +95,63 @@ struct SettingsView: View {
         )
     }
 
-    private var infoCard: some View {
+    private var prefsCard: some View {
         VStack(spacing: 0) {
-            navRow("Як це працює") { HowItWorksView() }
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("Попередження про загрозу")
+                        .font(.body)
+                        .foregroundStyle(Color(.label))
+                    Text("Тихі сповіщення про можливу загрозу. Підтверджені пуски надходять завжди")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+                Toggle("", isOn: Binding(
+                    get: { model.warningsEnabled },
+                    set: { enabled in Task { await model.setWarnings(enabled) } }
+                ))
+                .labelsHidden()
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 11)
+
             divider
-            navRow("Про застосунок") { AboutView() }
+
+            NavigationLink {
+                SoundPickerView()
+            } label: {
+                HStack(spacing: 12) {
+                    Text("Звук сигналу")
+                        .font(.body)
+                        .foregroundStyle(Color(.label))
+                    Spacer(minLength: 0)
+                    Text(AlertSound.name(of: model.alertSound))
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(Color(.tertiaryLabel))
+                }
+                .padding(.horizontal, 16)
+                .frame(minHeight: 48)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
         .background(
             Color(.secondarySystemGroupedBackground),
             in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
         )
+    }
+
+    private var infoCard: some View {
+        navRow("Про застосунок") { AboutView() }
+            .background(
+                Color(.secondarySystemGroupedBackground),
+                in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
+            )
     }
 
     private func navRow(
