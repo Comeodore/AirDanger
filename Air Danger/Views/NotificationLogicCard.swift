@@ -18,6 +18,13 @@ struct NotificationLogicCard: View {
             )
             divider
             row(
+                icon: "checkmark.shield",
+                tint: .green,
+                title: "Відбій",
+                detail: "Коли канали повідомляють про відбій загрози — надходить тихе сповіщення без звуку"
+            )
+            divider
+            row(
                 icon: "clock.arrow.circlepath",
                 tint: .teal,
                 title: "Хвилі, а не кожна ракета",

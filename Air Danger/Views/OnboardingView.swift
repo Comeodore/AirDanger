@@ -14,7 +14,7 @@ struct OnboardingView: View {
                         .font(.largeTitle.bold())
                         .tracking(-1)
                         .foregroundStyle(Color(.label))
-                    Text("Балістичні загрози для Києва за повідомленнями моніторингових каналів — коли рахунок іде на хвилини")
+                    Text("Розпізнає балістичні загрози для Києва у повідомленнях моніторингових каналів і сповіщає за лічені секунди — коли рахунок іде на хвилини")
                         .font(.callout)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)

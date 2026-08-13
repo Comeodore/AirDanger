@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MainView: View {
+struct SettingsView: View {
     @Environment(AppModel.self) private var model
 
     @State private var testSent = false
@@ -16,9 +16,9 @@ struct MainView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                statusCard
-                NotificationLogicCard()
                 UnofficialSourceBanner()
+                statusCard
+                infoCard
             }
             .padding(.horizontal, 16)
             .padding(.top, 4)
@@ -27,6 +27,8 @@ struct MainView: View {
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .animation(.default, value: model.notificationsEnabled)
+        .navigationTitle("Налаштування")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var statusCard: some View {
@@ -92,6 +94,40 @@ struct MainView: View {
         )
     }
 
+    private var infoCard: some View {
+        VStack(spacing: 0) {
+            navRow("Як це працює") { HowItWorksView() }
+            divider
+            navRow("Про застосунок") { AboutView() }
+        }
+        .background(
+            Color(.secondarySystemGroupedBackground),
+            in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
+        )
+    }
+
+    private func navRow(
+        _ title: String, @ViewBuilder destination: @escaping () -> some View
+    ) -> some View {
+        NavigationLink {
+            destination()
+        } label: {
+            HStack(spacing: 12) {
+                Text(title)
+                    .font(.body)
+                    .foregroundStyle(Color(.label))
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Color(.tertiaryLabel))
+            }
+            .padding(.horizontal, 16)
+            .frame(minHeight: 48)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
     private var divider: some View {
         HairlineDivider()
     }
@@ -120,5 +156,12 @@ private struct PulsingDot: View {
             } animation: { _ in
                 .easeInOut(duration: 1.6)
             }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        SettingsView()
+            .environment(AppModel.shared)
     }
 }

@@ -5,11 +5,14 @@ extension ThreatAlert {
         switch type {
         case "ballistic": "Балістика"
         case "irbm": "МБР"
+        case "all_clear": "Відбій"
         default: "Загроза"
         }
     }
 
     var isInbound: Bool { severity == "inbound" }
+
+    var isAllClear: Bool { type == "all_clear" }
 
     var channelName: String {
         switch channel {
@@ -25,15 +28,24 @@ extension ThreatAlert {
     }
 
     var title: String {
-        isInbound ? "\(typeName) — підтверджений пуск" : "\(typeName) — попередження"
+        if isAllClear {
+            return "Відбій"
+        }
+        return isInbound ? "\(typeName) — підтверджений пуск" : "\(typeName) — попередження"
     }
 
     var iconName: String {
-        isInbound ? "speaker.wave.3.fill" : "bell.and.waves.left.and.right"
+        if isAllClear {
+            return "checkmark.shield"
+        }
+        return isInbound ? "speaker.wave.3.fill" : "bell.and.waves.left.and.right"
     }
 
     var tint: Color {
-        isInbound ? .red : Palette.amberIcon
+        if isAllClear {
+            return .green
+        }
+        return isInbound ? .red : Palette.amberIcon
     }
 }
 
@@ -58,7 +70,7 @@ struct AlertRow: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(Color(.label))
                     Spacer(minLength: 0)
-                    Text(KyivTime.label(for: alert.ts, now: now))
+                    Text(KyivTime.rowLabel(for: alert.ts, now: now))
                         .font(.caption)
                         .foregroundStyle(Color(.tertiaryLabel))
                 }
@@ -78,6 +90,12 @@ struct AlertRow: View {
     }
 }
 
+private struct DaySection: Identifiable {
+    let day: Date
+    var alerts: [ThreatAlert]
+    var id: Date { day }
+}
+
 struct AlertsListView: View {
     @Environment(AppModel.self) private var model
 
@@ -95,25 +113,28 @@ struct AlertsListView: View {
                 )
             case .loaded(let alerts) where alerts.isEmpty:
                 ContentUnavailableView(
-                    "Останнім часом загроз не було",
+                    "Загроз не зафіксовано",
                     systemImage: "checkmark.shield",
                     description: Text("Щойно моніторингові канали повідомлять про загрозу для Києва, вона з’явиться тут.")
                 )
             case .loaded(let alerts):
                 TimelineView(.everyMinute) { context in
                     ScrollView {
-                        VStack(spacing: 0) {
-                            ForEach(Array(alerts.enumerated()), id: \.element.id) { index, alert in
-                                if index > 0 {
-                                    HairlineDivider()
-                                }
-                                AlertRow(alert: alert, now: context.date, textLineLimit: nil)
+                        LazyVStack(spacing: 0) {
+                            ForEach(sections(from: alerts)) { section in
+                                sectionHeader(
+                                    KyivTime.sectionTitle(for: section.day, now: context.date)
+                                )
+                                sectionCard(section, now: context.date)
+                            }
+                            if !model.alertsExhausted {
+                                ProgressView()
+                                    .padding(.vertical, 16)
+                                    .onAppear {
+                                        Task { await model.loadMoreAlerts() }
+                                    }
                             }
                         }
-                        .background(
-                            Color(.secondarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
-                        )
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
                     }
@@ -122,13 +143,57 @@ struct AlertsListView: View {
         }
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .refreshable { await model.refreshAlerts() }
-        .navigationTitle("Останні загрози")
+        .navigationTitle("Загрози")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             if model.alertsFeed == .loading {
                 await model.refreshAlerts()
             }
         }
+    }
+
+    private func sections(from alerts: [ThreatAlert]) -> [DaySection] {
+        var result: [DaySection] = []
+        for alert in alerts {
+            let day = KyivTime.day(of: alert.ts)
+            if result.last?.day == day {
+                result[result.count - 1].alerts.append(alert)
+            } else {
+                result.append(DaySection(day: day, alerts: [alert]))
+            }
+        }
+        return result
+    }
+
+    private func sectionHeader(_ title: String) -> some View {
+        Text(title.uppercased())
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.leading, 16)
+            .padding(.bottom, 7)
+    }
+
+    private func sectionCard(_ section: DaySection, now: Date) -> some View {
+        VStack(spacing: 0) {
+            ForEach(Array(section.alerts.enumerated()), id: \.element.id) { index, alert in
+                if index > 0 {
+                    HairlineDivider()
+                }
+                Button {
+                    model.openChannel(alert.channel)
+                } label: {
+                    AlertRow(alert: alert, now: now, textLineLimit: nil)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .background(
+            Color(.secondarySystemGroupedBackground),
+            in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
+        )
+        .padding(.bottom, 14)
     }
 }
 

@@ -14,6 +14,13 @@ enum AlertsFeed: Equatable {
 final class AppModel {
     static let shared = AppModel()
 
+    enum Tab: Hashable {
+        case threats
+        case settings
+    }
+
+    private static let alertsPage = 50
+
     private let api = APIClient()
     private let logger = Logger(subsystem: "comeodore.airdanger", category: "app")
     private let defaults = UserDefaults.standard
@@ -37,14 +44,54 @@ final class AppModel {
     }
 
     var alertsFeed: AlertsFeed = .loading
+    var selectedTab: Tab = .threats
+    private(set) var alertsExhausted = false
+    private var loadingMoreAlerts = false
 
     func refreshAlerts() async {
         do {
-            alertsFeed = .loaded(try await api.alerts())
+            let page = try await api.alerts(limit: Self.alertsPage)
+            if case .loaded(let existing) = alertsFeed, let oldest = page.last {
+                let tail = existing.filter { $0.id < oldest.id }
+                alertsFeed = .loaded(page + tail)
+            } else {
+                alertsFeed = .loaded(page)
+                alertsExhausted = page.count < Self.alertsPage
+            }
         } catch {
             logger.error("alerts refresh failed: \(error)")
             if case .loaded = alertsFeed {} else {
                 alertsFeed = .unavailable
+            }
+        }
+    }
+
+    func loadMoreAlerts() async {
+        guard case .loaded(let alerts) = alertsFeed, let last = alerts.last,
+              !alertsExhausted, !loadingMoreAlerts else { return }
+        loadingMoreAlerts = true
+        defer { loadingMoreAlerts = false }
+        do {
+            let page = try await api.alerts(limit: Self.alertsPage, before: last.id)
+            alertsExhausted = page.count < Self.alertsPage
+            if case .loaded(let current) = alertsFeed {
+                alertsFeed = .loaded(current + page.filter { $0.id < last.id })
+            }
+        } catch {
+            logger.error("alerts page failed: \(error)")
+        }
+    }
+
+    @MainActor
+    func openChannel(_ channel: String) {
+        let web = AppConfig.channelURL(channel)
+        guard let deepLink = AppConfig.channelDeepLink(channel) else {
+            UIApplication.shared.open(web)
+            return
+        }
+        UIApplication.shared.open(deepLink) { opened in
+            if !opened {
+                UIApplication.shared.open(web)
             }
         }
     }

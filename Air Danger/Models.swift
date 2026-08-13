@@ -5,13 +5,12 @@ struct DeviceRegistration: Codable, Equatable {
 }
 
 struct ThreatAlert: Codable, Equatable, Identifiable {
+    let id: Int
     let ts: Date
     let channel: String
     let type: String
     let severity: String
     let text: String
-
-    var id: String { "\(ts.timeIntervalSince1970)-\(severity)-\(text)" }
 }
 
 struct AlertsResponse: Codable, Equatable {

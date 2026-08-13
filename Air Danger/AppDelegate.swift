@@ -36,22 +36,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         didReceive response: UNNotificationResponse
     ) async {
         guard response.notification.request.content.userInfo["test"] == nil else { return }
-        let source = response.notification.request.content.userInfo["source"] as? String
-        let channel = (source?.isEmpty == false) ? source! : AppConfig.channel
-        await openChannel(channel)
-    }
-
-    @MainActor
-    private func openChannel(_ channel: String) {
-        let web = AppConfig.channelURL(channel)
-        guard let deepLink = AppConfig.channelDeepLink(channel) else {
-            UIApplication.shared.open(web)
-            return
+        await MainActor.run {
+            AppModel.shared.selectedTab = .threats
         }
-        UIApplication.shared.open(deepLink) { opened in
-            if !opened {
-                UIApplication.shared.open(web)
-            }
-        }
+        await AppModel.shared.refreshAlerts()
     }
 }

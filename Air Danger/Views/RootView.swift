@@ -5,13 +5,14 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
-        TabView {
-            MainView()
-                .tabItem { Label("Сповіщення", systemImage: "bell.badge") }
+        @Bindable var model = model
+        TabView(selection: $model.selectedTab) {
             NavigationStack { AlertsListView() }
                 .tabItem { Label("Загрози", systemImage: "exclamationmark.triangle") }
-            NavigationStack { AboutView() }
-                .tabItem { Label("Інфо", systemImage: "info.circle") }
+                .tag(AppModel.Tab.threats)
+            NavigationStack { SettingsView() }
+                .tabItem { Label("Налаштування", systemImage: "gearshape") }
+                .tag(AppModel.Tab.settings)
         }
         .task(id: "\(scenePhase)-\(model.onboarded)") {
             guard scenePhase == .active, model.onboarded else { return }

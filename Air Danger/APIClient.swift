@@ -29,9 +29,13 @@ struct APIClient {
         try await send(request)
     }
 
-    func alerts(limit: Int = 50) async throws -> [ThreatAlert] {
+    func alerts(limit: Int = 50, before: Int? = nil) async throws -> [ThreatAlert] {
         var request = makeRequest(path: "/alerts")
-        request.url?.append(queryItems: [URLQueryItem(name: "limit", value: String(limit))])
+        var query = [URLQueryItem(name: "limit", value: String(limit))]
+        if let before {
+            query.append(URLQueryItem(name: "before", value: String(before)))
+        }
+        request.url?.append(queryItems: query)
         let data = try await send(request)
         return try Self.decoder.decode(AlertsResponse.self, from: data).alerts
     }
