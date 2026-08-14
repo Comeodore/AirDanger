@@ -186,20 +186,22 @@ struct ThreatActivityWidget: Widget {
                         .frame(maxHeight: .infinity, alignment: .center)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    VStack(spacing: 2) {
+                    VStack(spacing: 3) {
                         Text(state.title)
-                            .font(.footnote.weight(.semibold))
+                            .font(.subheadline.weight(.semibold))
                             .foregroundStyle(.white)
                             .lineLimit(1)
-                            .minimumScaleFactor(0.8)
+                            .minimumScaleFactor(0.9)
                         Text(state.displayText)
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.72))
+                            .font(.footnote)
+                            .foregroundStyle(.white.opacity(0.7))
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.top, 2)
+                    .padding(.top, 10)
+                    .padding(.bottom, 4)
+                    .padding(.horizontal, 6)
                     .widgetURL(threatsURL)
                 }
             } compactLeading: {
