@@ -151,6 +151,7 @@ private struct ThreatLockScreenView: View {
             Text(state.summary)
                 .font(.caption)
                 .foregroundStyle(.white.opacity(0.6))
+                .frame(maxWidth: .infinity)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 13)
