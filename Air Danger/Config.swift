@@ -1,7 +1,7 @@
 import Foundation
 
 enum AppConfig {
-    #if DEBUG
+    #if DEBUG && targetEnvironment(simulator)
     static let baseURL = URL(string: "http://localhost:9994")!
     #else
     static let baseURL = URL(string: "https://airdanger-api.comeodore.services")!
