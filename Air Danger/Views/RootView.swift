@@ -1,3 +1,4 @@
+import ActivityKit
 import SwiftUI
 
 struct RootView: View {
@@ -16,6 +17,11 @@ struct RootView: View {
         }
         .task(id: "\(scenePhase)-\(model.onboarded)") {
             guard scenePhase == .active, model.onboarded else { return }
+            if Activity<ThreatActivityAttributes>.activities.contains(
+                where: { $0.activityState == .active }
+            ) {
+                model.selectedTab = .threats
+            }
             await model.refreshNotificationStatus()
             await model.syncPrefs()
             while !Task.isCancelled {

@@ -203,6 +203,7 @@ private struct PulsingDot: View {
             } animation: { _ in
                 .easeInOut(duration: 1.6)
             }
+            .geometryGroup()
     }
 }
 

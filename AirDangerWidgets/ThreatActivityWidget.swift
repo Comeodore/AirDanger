@@ -2,6 +2,16 @@ import ActivityKit
 import SwiftUI
 import WidgetKit
 
+private let threatsURL = URL(string: "airdanger://threats")!
+
+private let kyivClock: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "uk_UA")
+    formatter.timeZone = TimeZone(identifier: "Europe/Kyiv") ?? .current
+    formatter.dateFormat = "HH:mm"
+    return formatter
+}()
+
 extension ThreatActivityAttributes.ContentState {
     var isClear: Bool { state == "clear" }
 
@@ -33,6 +43,32 @@ extension ThreatActivityAttributes.ContentState {
             return Color(red: 1.0, green: 0.27, blue: 0.23)
         }
         return Color(red: 1.0, green: 0.62, blue: 0.04)
+    }
+
+    var countLabel: String {
+        let mod10 = count % 10
+        let mod100 = count % 100
+        let word: String
+        if mod10 == 1 && mod100 != 11 {
+            word = "сигнал"
+        } else if (2...4).contains(mod10) && !(12...14).contains(mod100) {
+            word = "сигнали"
+        } else {
+            word = "сигналів"
+        }
+        return "\(count) \(word)"
+    }
+
+    var summary: String {
+        if isClear {
+            let minutes = max(1, Int((Date.now.timeIntervalSince1970 - startedAt) / 60))
+            return "Тривало \(minutes) хв · \(countLabel)"
+        }
+        guard let lastAt else {
+            return countLabel
+        }
+        let clock = kyivClock.string(from: Date(timeIntervalSince1970: lastAt))
+        return "\(countLabel) · останній \(clock)"
     }
 }
 
@@ -94,24 +130,33 @@ private struct ThreatLockScreenView: View {
     let state: ThreatActivityAttributes.ContentState
 
     var body: some View {
-        HStack(spacing: 11) {
-            ThreatBadge(state: state)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(state.title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.white)
-                Text(state.displayText)
-                    .font(.footnote)
-                    .foregroundStyle(.white.opacity(0.72))
-                    .lineLimit(2)
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 11) {
+                ThreatBadge(state: state)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(state.title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                    Text(state.displayText)
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.72))
+                        .lineLimit(2)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
             }
-            .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: 0)
+            Rectangle()
+                .fill(.white.opacity(0.14))
+                .frame(height: 0.5)
+            Text(state.summary)
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.6))
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 14)
+        .padding(.vertical, 13)
         .activityBackgroundTint(Color(red: 0.11, green: 0.11, blue: 0.12).opacity(0.93))
         .activitySystemActionForegroundColor(.white)
+        .widgetURL(threatsURL)
     }
 }
 
@@ -138,16 +183,20 @@ struct ThreatActivityWidget: Widget {
                             .lineLimit(2)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .widgetURL(threatsURL)
                 }
             } compactLeading: {
                 AppShieldMark()
                     .frame(height: 18)
+                    .widgetURL(threatsURL)
             } compactTrailing: {
                 Image(systemName: state.iconName)
                     .foregroundStyle(state.tint)
+                    .widgetURL(threatsURL)
             } minimal: {
                 Image(systemName: state.iconName)
                     .foregroundStyle(state.tint)
+                    .widgetURL(threatsURL)
             }
             .keylineTint(state.tint)
         }

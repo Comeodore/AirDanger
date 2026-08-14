@@ -185,7 +185,7 @@ final class AppModel {
         let state = ThreatActivityAttributes.ContentState(
             state: "active", type: "ballistic", severity: "inbound",
             text: "2х КР Циркон вектор Конотоп далі Київщина",
-            count: 3, startedAt: now - 132, escalatedAt: now - 41
+            count: 3, startedAt: now - 132, escalatedAt: now - 41, lastAt: now - 41
         )
         do {
             _ = try Activity<ThreatActivityAttributes>.request(

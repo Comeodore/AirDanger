@@ -464,6 +464,7 @@
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SupportFiles/Info-Release.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Air Danger";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;

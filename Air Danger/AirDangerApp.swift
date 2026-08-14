@@ -10,6 +10,9 @@ struct AirDangerApp: App {
         WindowGroup {
             RootView()
                 .environment(model)
+                .onOpenURL { _ in
+                    model.selectedTab = .threats
+                }
                 .fullScreenCover(isPresented: .constant(!onboarded)) {
                     OnboardingView()
                         .environment(model)

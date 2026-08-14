@@ -10,6 +10,7 @@ nonisolated struct ThreatActivityAttributes: ActivityAttributes {
         var count: Int
         var startedAt: Double
         var escalatedAt: Double?
+        var lastAt: Double?
     }
 
     var episode: Int
