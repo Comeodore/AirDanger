@@ -4,6 +4,8 @@ import WidgetKit
 
 private let threatsURL = URL(string: "airdanger://threats")!
 
+private let inactiveTint = Color(white: 0.62)
+
 private let kyivClock: DateFormatter = {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "uk_UA")
@@ -15,6 +17,8 @@ private let kyivClock: DateFormatter = {
 extension ThreatActivityAttributes.ContentState {
     var isClear: Bool { state == "clear" }
 
+    var isEnded: Bool { state == "ended" }
+
     var isInbound: Bool { severity == "inbound" }
 
     var typeName: String { type == "irbm" ? "МБР" : "Балістика" }
@@ -22,6 +26,9 @@ extension ThreatActivityAttributes.ContentState {
     var title: String {
         if isClear {
             return "Відбій"
+        }
+        if isEnded {
+            return "Без нових сигналів"
         }
         return isInbound ? "\(typeName) — підтверджений пуск" : "\(typeName) — попередження"
     }
@@ -32,17 +39,30 @@ extension ThreatActivityAttributes.ContentState {
     }
 
     var iconName: String {
-        isClear ? "checkmark.shield.fill" : "exclamationmark.triangle.fill"
+        if isClear {
+            return "checkmark.shield.fill"
+        }
+        if isEnded {
+            return "shield.fill"
+        }
+        return "exclamationmark.triangle.fill"
     }
 
     var tint: Color {
         if isClear {
             return Color(red: 0.19, green: 0.82, blue: 0.35)
         }
+        if isEnded {
+            return inactiveTint
+        }
         if isInbound {
             return Color(red: 1.0, green: 0.27, blue: 0.23)
         }
         return Color(red: 1.0, green: 0.62, blue: 0.04)
+    }
+
+    func tint(stale: Bool) -> Color {
+        stale ? inactiveTint : tint
     }
 
     var countLabel: String {
@@ -60,7 +80,7 @@ extension ThreatActivityAttributes.ContentState {
     }
 
     var summary: String {
-        if isClear {
+        if isClear || isEnded {
             let minutes = max(1, Int((Date.now.timeIntervalSince1970 - startedAt) / 60))
             return "Тривало \(minutes) хв · \(countLabel)"
         }
@@ -75,16 +95,17 @@ extension ThreatActivityAttributes.ContentState {
 
 private struct ThreatBadge: View {
     let state: ThreatActivityAttributes.ContentState
+    var stale: Bool = false
     var size: CGFloat = 34
 
     var body: some View {
         RoundedRectangle(cornerRadius: size * 0.3, style: .continuous)
-            .fill(state.tint.opacity(0.2))
+            .fill(state.tint(stale: stale).opacity(0.2))
             .frame(width: size, height: size)
             .overlay {
                 Image(systemName: state.iconName)
                     .font(.system(size: size * 0.5, weight: .medium))
-                    .foregroundStyle(state.tint)
+                    .foregroundStyle(state.tint(stale: stale))
             }
     }
 }
@@ -129,11 +150,12 @@ private struct ShieldShape: Shape {
 
 private struct ThreatLockScreenView: View {
     let state: ThreatActivityAttributes.ContentState
+    var stale: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 9) {
             HStack(spacing: 11) {
-                ThreatBadge(state: state)
+                ThreatBadge(state: state, stale: stale)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(state.title)
                         .font(.subheadline.weight(.semibold))
@@ -165,9 +187,10 @@ private struct ThreatLockScreenView: View {
 struct ThreatActivityWidget: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: ThreatActivityAttributes.self) { context in
-            ThreatLockScreenView(state: context.state)
+            ThreatLockScreenView(state: context.state, stale: context.isStale)
         } dynamicIsland: { context in
             let state = context.state
+            let stale = context.isStale
             return DynamicIsland {
                 DynamicIslandExpandedRegion(.center) {
                     VStack(spacing: 3) {
@@ -192,14 +215,14 @@ struct ThreatActivityWidget: Widget {
                     .widgetURL(threatsURL)
             } compactTrailing: {
                 Image(systemName: state.iconName)
-                    .foregroundStyle(state.tint)
+                    .foregroundStyle(state.tint(stale: stale))
                     .widgetURL(threatsURL)
             } minimal: {
                 Image(systemName: state.iconName)
-                    .foregroundStyle(state.tint)
+                    .foregroundStyle(state.tint(stale: stale))
                     .widgetURL(threatsURL)
             }
-            .keylineTint(state.tint)
+            .keylineTint(state.tint(stale: stale))
         }
     }
 }

@@ -179,6 +179,17 @@ final class AppModel {
         #endif
     }
 
+    func endStaleActivities() async {
+        let cutoff = Date().timeIntervalSince1970 - 1800
+        for activity in Activity<ThreatActivityAttributes>.activities {
+            guard activity.activityState == .active else { continue }
+            let state = activity.content.state
+            guard state.state == "active",
+                  (state.lastAt ?? state.startedAt) < cutoff else { continue }
+            await activity.end(activity.content, dismissalPolicy: .immediate)
+        }
+    }
+
     #if DEBUG
     private func startSampleActivity() {
         let now = Date().timeIntervalSince1970

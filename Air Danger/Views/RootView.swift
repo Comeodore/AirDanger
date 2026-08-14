@@ -22,6 +22,7 @@ struct RootView: View {
         }
         .task(id: "\(scenePhase)-\(model.onboarded)") {
             guard scenePhase == .active, model.onboarded else { return }
+            await model.endStaleActivities()
             #if DEBUG && targetEnvironment(simulator)
             if let activity = Activity<ThreatActivityAttributes>.activities.first(
                 where: { $0.activityState == .active }
