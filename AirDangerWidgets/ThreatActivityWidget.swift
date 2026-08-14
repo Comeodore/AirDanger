@@ -168,20 +168,22 @@ struct ThreatActivityWidget: Widget {
         } dynamicIsland: { context in
             let state = context.state
             return DynamicIsland {
-                DynamicIslandExpandedRegion(.leading) {
-                    ThreatBadge(state: state, size: 32)
-                }
                 DynamicIslandExpandedRegion(.center) {
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(state.title)
-                            .font(.footnote.weight(.semibold))
-                            .foregroundStyle(.white)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
-                        Text(state.displayText)
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.72))
-                            .lineLimit(2)
+                    HStack(spacing: 11) {
+                        ThreatBadge(state: state, size: 32)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(state.title)
+                                .font(.footnote.weight(.semibold))
+                                .foregroundStyle(.white)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                            Text(state.displayText)
+                                .font(.caption)
+                                .foregroundStyle(.white.opacity(0.72))
+                                .lineLimit(2)
+                        }
+                        .fixedSize(horizontal: false, vertical: true)
+                        Spacer(minLength: 0)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .widgetURL(threatsURL)
