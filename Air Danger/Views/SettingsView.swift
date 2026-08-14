@@ -27,7 +27,6 @@ struct SettingsView: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
-        .animation(.default, value: model.notificationsEnabled)
         .navigationTitle("Налаштування")
         .navigationBarTitleDisplayMode(.inline)
     }

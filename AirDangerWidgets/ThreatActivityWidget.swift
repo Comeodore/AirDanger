@@ -34,10 +34,7 @@ extension ThreatActivityAttributes.ContentState {
     }
 
     var iconName: String {
-        if isClear {
-            return "checkmark.shield"
-        }
-        return isInbound ? "speaker.wave.3.fill" : "bell.and.waves.left.and.right"
+        isClear ? "checkmark.shield" : "exclamationmark.triangle.fill"
     }
 
     var tint: Color {
@@ -75,10 +72,6 @@ extension ThreatActivityAttributes.ContentState {
         let label = isInbound ? "Пуск" : "Попередження"
         return "\(label) \(kyivClock.string(from: started)) · \(countLabel)"
     }
-
-    var timerRange: ClosedRange<Date> {
-        started...started.addingTimeInterval(8 * 3600)
-    }
 }
 
 private struct ThreatBadge: View {
@@ -94,26 +87,6 @@ private struct ThreatBadge: View {
                     .font(.system(size: size * 0.5, weight: .medium))
                     .foregroundStyle(state.tint)
             }
-    }
-}
-
-private struct ThreatTimerText: View {
-    let state: ThreatActivityAttributes.ContentState
-
-    var body: some View {
-        if state.isClear {
-            Image(systemName: "checkmark")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(state.tint)
-        } else {
-            Text(timerInterval: state.timerRange, countsDown: false)
-                .font(.system(.callout, design: .monospaced).weight(.semibold))
-                .lineLimit(1)
-                .minimumScaleFactor(0.6)
-                .multilineTextAlignment(.trailing)
-                .frame(maxWidth: 64)
-                .foregroundStyle(state.tint)
-        }
     }
 }
 
@@ -134,8 +107,7 @@ private struct ThreatLockScreenView: View {
                         .lineLimit(2)
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                Spacer(minLength: 6)
-                ThreatTimerText(state: state)
+                Spacer(minLength: 0)
             }
             HairlineRule()
             Text(state.timeline)
@@ -182,10 +154,6 @@ struct ThreatActivityWidget: Widget {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                DynamicIslandExpandedRegion(.trailing) {
-                    ThreatTimerText(state: state)
-                        .padding(.top, 4)
-                }
                 DynamicIslandExpandedRegion(.bottom) {
                     Text(state.timeline)
                         .font(.caption2)
@@ -195,19 +163,7 @@ struct ThreatActivityWidget: Widget {
                 Image(systemName: state.iconName)
                     .foregroundStyle(state.tint)
             } compactTrailing: {
-                if state.isClear {
-                    Image(systemName: "checkmark")
-                        .foregroundStyle(state.tint)
-                } else {
-                    Text(timerInterval: state.timerRange, countsDown: false)
-                        .font(.caption2.weight(.semibold))
-                        .monospacedDigit()
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.6)
-                        .multilineTextAlignment(.trailing)
-                        .frame(maxWidth: 44)
-                        .foregroundStyle(state.tint)
-                }
+                EmptyView()
             } minimal: {
                 Image(systemName: state.iconName)
                     .foregroundStyle(state.tint)
