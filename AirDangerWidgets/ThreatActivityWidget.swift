@@ -70,6 +70,10 @@ extension ThreatActivityAttributes.ContentState {
         let clock = kyivClock.string(from: Date(timeIntervalSince1970: lastAt))
         return "\(countLabel) · останній \(clock)"
     }
+
+    var clockLabel: String {
+        kyivClock.string(from: Date(timeIntervalSince1970: lastAt ?? startedAt))
+    }
 }
 
 private struct ThreatBadge: View {
@@ -168,24 +172,34 @@ struct ThreatActivityWidget: Widget {
         } dynamicIsland: { context in
             let state = context.state
             return DynamicIsland {
-                DynamicIslandExpandedRegion(.center) {
-                    HStack(spacing: 11) {
-                        ThreatBadge(state: state, size: 32)
-                        VStack(alignment: .leading, spacing: 1) {
-                            Text(state.title)
-                                .font(.footnote.weight(.semibold))
-                                .foregroundStyle(.white)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.8)
-                            Text(state.displayText)
-                                .font(.caption)
-                                .foregroundStyle(.white.opacity(0.72))
-                                .lineLimit(2)
-                        }
-                        .fixedSize(horizontal: false, vertical: true)
-                        Spacer(minLength: 0)
+                DynamicIslandExpandedRegion(.leading) {
+                    Image(systemName: state.iconName)
+                        .font(.system(size: 19, weight: .medium))
+                        .foregroundStyle(state.tint)
+                        .frame(maxHeight: .infinity, alignment: .center)
+                }
+                DynamicIslandExpandedRegion(.trailing) {
+                    Text(state.clockLabel)
+                        .font(.footnote.weight(.medium))
+                        .monospacedDigit()
+                        .foregroundStyle(.white.opacity(0.6))
+                        .frame(maxHeight: .infinity, alignment: .center)
+                }
+                DynamicIslandExpandedRegion(.bottom) {
+                    VStack(spacing: 2) {
+                        Text(state.title)
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                        Text(state.displayText)
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.72))
+                            .multilineTextAlignment(.center)
+                            .lineLimit(2)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 2)
                     .widgetURL(threatsURL)
                 }
             } compactLeading: {
