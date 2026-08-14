@@ -29,7 +29,9 @@ final class AppModel {
     private init() {
         notificationsEnabled = defaults.object(forKey: "notificationsEnabled") as? Bool ?? true
         warningsEnabled = defaults.object(forKey: "warningsEnabled") as? Bool ?? true
-        alertSound = defaults.string(forKey: "alertSound") ?? "alert.caf"
+        let storedSound = defaults.string(forKey: "alertSound") ?? "alert.caf"
+        alertSound = AlertSound.choices.contains { $0.file == storedSound }
+            ? storedSound : "alert.caf"
     }
 
     var onboarded: Bool {
@@ -196,7 +198,7 @@ final class AppModel {
         let state = ThreatActivityAttributes.ContentState(
             state: "active", type: "ballistic", severity: "inbound",
             text: "2х КР Циркон вектор Конотоп далі Київщина",
-            count: 3, startedAt: now - 132, escalatedAt: now - 41, lastAt: now - 41
+            count: 3, startedAt: now - 132, escalatedAt: now - 41, lastAt: nil
         )
         do {
             _ = try Activity<ThreatActivityAttributes>.request(
