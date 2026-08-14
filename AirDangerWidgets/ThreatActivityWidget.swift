@@ -71,9 +71,6 @@ extension ThreatActivityAttributes.ContentState {
         return "\(countLabel) · останній \(clock)"
     }
 
-    var clockLabel: String {
-        kyivClock.string(from: Date(timeIntervalSince1970: lastAt ?? startedAt))
-    }
 }
 
 private struct ThreatBadge: View {
@@ -172,20 +169,7 @@ struct ThreatActivityWidget: Widget {
         } dynamicIsland: { context in
             let state = context.state
             return DynamicIsland {
-                DynamicIslandExpandedRegion(.leading) {
-                    Image(systemName: state.iconName)
-                        .font(.system(size: 19, weight: .medium))
-                        .foregroundStyle(state.tint)
-                        .frame(maxHeight: .infinity, alignment: .center)
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    Text(state.clockLabel)
-                        .font(.footnote.weight(.medium))
-                        .monospacedDigit()
-                        .foregroundStyle(.white.opacity(0.6))
-                        .frame(maxHeight: .infinity, alignment: .center)
-                }
-                DynamicIslandExpandedRegion(.bottom) {
+                DynamicIslandExpandedRegion(.center) {
                     VStack(spacing: 3) {
                         Text(state.title)
                             .font(.subheadline.weight(.semibold))
@@ -198,10 +182,8 @@ struct ThreatActivityWidget: Widget {
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 10)
-                    .padding(.bottom, 4)
-                    .padding(.horizontal, 6)
+                    .padding(.top, 8)
+                    .padding(.bottom, 2)
                     .widgetURL(threatsURL)
                 }
             } compactLeading: {
