@@ -33,13 +33,11 @@ struct APIClient {
         try await send(request)
     }
 
-    func updateDevice(token: String, warnings: Bool, sound: String) async throws {
+    func updateDevice(_ prefs: DevicePrefs, token: String) async throws {
         var request = makeRequest(path: "/devices/\(token)")
         request.httpMethod = "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(
-            DevicePrefs(warnings: warnings, sound: sound)
-        )
+        request.httpBody = try JSONEncoder().encode(prefs)
         try await send(request)
     }
 

@@ -1,3 +1,4 @@
+import ActivityKit
 import Foundation
 import Observation
 import os
@@ -70,7 +71,7 @@ final class AppModel {
               defaults.bool(forKey: "deviceRegistered"),
               let token = deviceToken else { return }
         do {
-            try await api.updateDevice(token: token, warnings: warningsEnabled, sound: alertSound)
+            try await api.updateDevice(devicePrefs, token: token)
             defaults.set(false, forKey: "prefsDirty")
             logger.info("device prefs synced")
         } catch APIError.status(404) {
@@ -82,6 +83,23 @@ final class AppModel {
         } catch {
             logger.error("prefs sync failed: \(error)")
         }
+    }
+
+    private var devicePrefs: DevicePrefs {
+        DevicePrefs(
+            warnings: warningsEnabled,
+            sound: alertSound,
+            laStartToken: defaults.string(forKey: "laStartToken"),
+            laUpdateToken: defaults.string(forKey: "laUpdateToken")
+        )
+    }
+
+    func storeLiveActivityToken(_ token: String, key: String) async {
+        guard defaults.string(forKey: key) != token else { return }
+        defaults.set(token, forKey: key)
+        defaults.set(true, forKey: "prefsDirty")
+        logger.info("live activity token updated: \(key)")
+        await syncPrefs()
     }
 
     var alertsFeed: AlertsFeed = .loading
@@ -156,7 +174,29 @@ final class AppModel {
         } catch {
             logger.error("test notification failed: \(error)")
         }
+        #if DEBUG
+        startSampleActivity()
+        #endif
     }
+
+    #if DEBUG
+    private func startSampleActivity() {
+        let now = Date().timeIntervalSince1970
+        let state = ThreatActivityAttributes.ContentState(
+            state: "active", type: "ballistic", severity: "inbound",
+            text: "2х КР Циркон вектор Конотоп далі Київщина",
+            count: 3, startedAt: now - 132, escalatedAt: now - 41
+        )
+        do {
+            _ = try Activity<ThreatActivityAttributes>.request(
+                attributes: ThreatActivityAttributes(episode: 0),
+                content: .init(state: state, staleDate: nil)
+            )
+        } catch {
+            logger.error("sample activity failed: \(error)")
+        }
+    }
+    #endif
 
     func enableNotifications() async {
         do {
@@ -193,6 +233,12 @@ final class AppModel {
     }
 
     func registrationBody(token: String) -> DeviceRegistration {
-        DeviceRegistration(token: token, warnings: warningsEnabled, sound: alertSound)
+        DeviceRegistration(
+            token: token,
+            warnings: warningsEnabled,
+            sound: alertSound,
+            laStartToken: defaults.string(forKey: "laStartToken"),
+            laUpdateToken: defaults.string(forKey: "laUpdateToken")
+        )
     }
 }

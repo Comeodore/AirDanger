@@ -17,6 +17,7 @@ struct AirDangerApp: App {
                 .task {
                     guard onboarded else { return }
                     UIApplication.shared.registerForRemoteNotifications()
+                    model.watchLiveActivityTokens()
                 }
         }
     }

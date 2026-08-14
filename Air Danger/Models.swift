@@ -4,11 +4,27 @@ struct DeviceRegistration: Codable, Equatable {
     let token: String
     let warnings: Bool
     let sound: String
+    let laStartToken: String?
+    let laUpdateToken: String?
+
+    enum CodingKeys: String, CodingKey {
+        case token, warnings, sound
+        case laStartToken = "la_start_token"
+        case laUpdateToken = "la_update_token"
+    }
 }
 
 struct DevicePrefs: Codable, Equatable {
     let warnings: Bool
     let sound: String
+    let laStartToken: String?
+    let laUpdateToken: String?
+
+    enum CodingKeys: String, CodingKey {
+        case warnings, sound
+        case laStartToken = "la_start_token"
+        case laUpdateToken = "la_update_token"
+    }
 }
 
 struct ThreatAlert: Codable, Equatable, Identifiable {
