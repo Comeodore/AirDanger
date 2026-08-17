@@ -4,6 +4,9 @@ import Foundation
 extension AppModel {
     func watchLiveActivityTokens() {
         Task {
+            if let current = Activity<ThreatActivityAttributes>.pushToStartToken {
+                await storeLiveActivityToken(current.hexString, key: "laStartToken")
+            }
             for await tokenData in Activity<ThreatActivityAttributes>.pushToStartTokenUpdates {
                 await storeLiveActivityToken(tokenData.hexString, key: "laStartToken")
             }
@@ -20,6 +23,9 @@ extension AppModel {
 
     private func watchPushToken(of activity: Activity<ThreatActivityAttributes>) {
         Task {
+            if let current = activity.pushToken {
+                await storeLiveActivityToken(current.hexString, key: "laUpdateToken")
+            }
             for await tokenData in activity.pushTokenUpdates {
                 await storeLiveActivityToken(tokenData.hexString, key: "laUpdateToken")
             }

@@ -17,7 +17,7 @@ struct AirDangerApp: App {
                     OnboardingView()
                         .environment(model)
                 }
-                .task {
+                .task(id: onboarded) {
                     guard onboarded else { return }
                     UIApplication.shared.registerForRemoteNotifications()
                     model.watchLiveActivityTokens()
