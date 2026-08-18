@@ -193,29 +193,35 @@ struct ThreatActivityWidget: Widget {
             let stale = context.isStale
             return DynamicIsland {
                 DynamicIslandExpandedRegion(.center) {
-                    VStack(spacing: 3) {
-                        Text(state.title)
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(.white)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.9)
-                        Text(state.displayText)
-                            .font(.footnote)
-                            .foregroundStyle(.white.opacity(0.7))
-                            .multilineTextAlignment(.center)
-                            .lineLimit(2)
+                    HStack(spacing: 10) {
+                        ThreatBadge(state: state, stale: stale)
+                        VStack(spacing: 3) {
+                            Text(state.title)
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.white)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.9)
+                            Text(state.displayText)
+                                .font(.footnote)
+                                .foregroundStyle(.white.opacity(0.7))
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+                        }
+                        .frame(maxWidth: .infinity)
+                        AppShieldMark()
+                            .frame(width: 34, height: 28)
                     }
-                    .padding(.top, 8)
+                    .padding(.top, 6)
                     .padding(.bottom, 2)
                     .widgetURL(threatsURL)
                 }
             } compactLeading: {
-                AppShieldMark()
-                    .frame(height: 18)
-                    .widgetURL(threatsURL)
-            } compactTrailing: {
                 Image(systemName: state.iconName)
                     .foregroundStyle(state.tint(stale: stale))
+                    .widgetURL(threatsURL)
+            } compactTrailing: {
+                AppShieldMark()
+                    .frame(height: 18)
                     .widgetURL(threatsURL)
             } minimal: {
                 Image(systemName: state.iconName)
