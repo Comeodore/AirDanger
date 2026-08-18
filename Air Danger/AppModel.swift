@@ -32,6 +32,7 @@ final class AppModel {
         let storedSound = defaults.string(forKey: "alertSound") ?? "alert.caf"
         alertSound = AlertSound.choices.contains { $0.file == storedSound }
             ? storedSound : "alert.caf"
+        theme = AppTheme(rawValue: defaults.string(forKey: "theme") ?? "") ?? .system
     }
 
     var onboarded: Bool {
@@ -54,6 +55,10 @@ final class AppModel {
 
     var alertSound: String {
         didSet { defaults.set(alertSound, forKey: "alertSound") }
+    }
+
+    var theme: AppTheme {
+        didSet { defaults.set(theme.rawValue, forKey: "theme") }
     }
 
     func setWarnings(_ enabled: Bool) async {

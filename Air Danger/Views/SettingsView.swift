@@ -138,6 +138,29 @@ struct SettingsView: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+
+            divider
+
+            NavigationLink {
+                ThemePickerView()
+            } label: {
+                HStack(spacing: 12) {
+                    Text("Тема")
+                        .font(.body)
+                        .foregroundStyle(Color(.label))
+                    Spacer(minLength: 0)
+                    Text(model.theme.name)
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(Color(.tertiaryLabel))
+                }
+                .padding(.horizontal, 16)
+                .frame(minHeight: 48)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
         .background(
             Color(.secondarySystemGroupedBackground),

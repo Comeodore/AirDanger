@@ -17,6 +17,7 @@ struct AirDangerApp: App {
                     OnboardingView()
                         .environment(model)
                 }
+                .preferredColorScheme(model.theme.colorScheme)
                 .task(id: onboarded) {
                     guard onboarded else { return }
                     UIApplication.shared.registerForRemoteNotifications()

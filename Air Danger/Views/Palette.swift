@@ -13,6 +13,30 @@ extension Color {
     }
 }
 
+enum AppTheme: String, CaseIterable, Identifiable {
+    case system
+    case light
+    case dark
+
+    var id: String { rawValue }
+
+    var name: String {
+        switch self {
+        case .system: "Системна"
+        case .light: "Світла"
+        case .dark: "Темна"
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: nil
+        case .light: .light
+        case .dark: .dark
+        }
+    }
+}
+
 struct HairlineDivider: View {
     @Environment(\.displayScale) private var scale
 
