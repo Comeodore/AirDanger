@@ -11,17 +11,24 @@ struct NotificationLogicCard: View {
             )
             divider
             row(
+                icon: "speaker.wave.3.fill",
+                tint: .red,
+                title: "Підтверджений пуск",
+                detail: "Критичне сповіщення: гучний сигнал лунає навіть у беззвучному режимі. Гучність задається в застосунку"
+            )
+            divider
+            row(
+                icon: "bell.badge.slash",
+                tint: Palette.amberIcon,
+                title: "Якщо критичні вимкнені",
+                detail: "Сигнал надходить як термінове сповіщення — на гучності дзвінка й лише вібрацією в беззвучному режимі"
+            )
+            divider
+            row(
                 icon: "bell.and.waves.left.and.right",
                 tint: Palette.amberIcon,
                 title: "Попередження про загрозу",
                 detail: "Тихе сповіщення — лише вібрація"
-            )
-            divider
-            row(
-                icon: "speaker.wave.3.fill",
-                tint: .red,
-                title: "Підтверджений пуск",
-                detail: "Гучний сигнал — на рівні гучності дзвінка"
             )
             divider
             row(
@@ -36,13 +43,6 @@ struct NotificationLogicCard: View {
                 tint: .teal,
                 title: "Хвилі, а не кожна ракета",
                 detail: "Сповіщення про ту саму загрозу надходять не частіше ніж раз на 2 хвилини. Якщо загроза посилюється — сповіщаємо одразу"
-            )
-            divider
-            row(
-                icon: "moon.fill",
-                tint: .indigo,
-                title: "«Не турбувати» і фокусування",
-                detail: "Сповіщення надходять як термінові й за стандартних налаштувань iOS пробиваються крізь ці режими"
             )
         }
         .background(

@@ -9,8 +9,34 @@ struct SettingsView: View {
         URL(string: UIApplication.openNotificationSettingsURLString)!
     }
 
+    private var criticalMissing: Bool {
+        model.notificationsEnabled && !model.criticalAlertsEnabled
+    }
+
     private var statusColor: Color {
-        model.notificationsEnabled ? .green : .red
+        if !model.notificationsEnabled { return .red }
+        return model.criticalAlertsEnabled ? .green : Palette.amberIcon
+    }
+
+    private var statusIcon: String {
+        if !model.notificationsEnabled { return "bell.slash" }
+        return model.criticalAlertsEnabled ? "bell.badge" : "bell.badge.slash"
+    }
+
+    private var statusTitle: String {
+        if !model.notificationsEnabled { return "Сповіщення вимкнені" }
+        return model.criticalAlertsEnabled
+            ? "Критичні сповіщення увімкнені"
+            : "Критичні сповіщення вимкнені"
+    }
+
+    private var statusDetail: String? {
+        if !model.notificationsEnabled {
+            return "Без дозволу застосунок не попередить про пуск"
+        }
+        return model.criticalAlertsEnabled
+            ? "Сигнал про підтверджений пуск лунає навіть у беззвучному режимі"
+            : nil
     }
 
     var body: some View {
@@ -35,30 +61,28 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 bellBadge
-                Text(model.notificationsEnabled ? "Сповіщення увімкнені" : "Сповіщення вимкнені")
-                    .font(.headline)
-                    .foregroundStyle(Color(.label))
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(statusTitle)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(criticalMissing ? Palette.amberTitle : Color(.label))
+                    if let statusDetail {
+                        Text(statusDetail)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
                 PulsingDot(color: statusColor)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 13)
+            .padding(.vertical, 12)
+            .background(criticalMissing ? Palette.amberFill : Color.clear)
 
             divider
 
             Link(destination: settingsURL) {
-                HStack(spacing: 12) {
-                    Text("Налаштування сповіщень")
-                        .font(.body)
-                        .foregroundStyle(Color.accentColor)
-                    Spacer(minLength: 0)
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(Color(.tertiaryLabel))
-                }
-                .padding(.horizontal, 16)
-                .frame(minHeight: 48)
-                .contentShape(Rectangle())
+                row(title: "Налаштування сповіщень", chevron: true)
             }
             .buttonStyle(.plain)
 
@@ -88,10 +112,8 @@ struct SettingsView: View {
             }
             .buttonStyle(.plain)
         }
-        .background(
-            Color(.secondarySystemGroupedBackground),
-            in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
-        )
+        .background(Color(.secondarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous))
     }
 
     private var prefsCard: some View {
@@ -176,6 +198,23 @@ struct SettingsView: View {
             )
     }
 
+    private func row(title: String, chevron: Bool) -> some View {
+        HStack(spacing: 12) {
+            Text(title)
+                .font(.body)
+                .foregroundStyle(Color.accentColor)
+            Spacer(minLength: 0)
+            if chevron {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Color(.tertiaryLabel))
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(minHeight: 48)
+        .contentShape(Rectangle())
+    }
+
     private func navRow(
         _ title: String, @ViewBuilder destination: @escaping () -> some View
     ) -> some View {
@@ -207,8 +246,8 @@ struct SettingsView: View {
             .fill(statusColor.opacity(0.16))
             .frame(width: 30, height: 30)
             .overlay {
-                Image(systemName: model.notificationsEnabled ? "bell" : "bell.slash")
-                    .font(.system(size: 16, weight: .medium))
+                Image(systemName: statusIcon)
+                    .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(statusColor)
             }
     }

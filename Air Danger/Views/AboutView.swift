@@ -24,7 +24,8 @@ struct AboutView: View {
                     .padding(.top, 2)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.top, 2)
+            .padding(.bottom, 8)
         }
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
@@ -46,7 +47,7 @@ struct AboutView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.top, 18)
+        .padding(.top, 2)
         .padding(.bottom, 10)
     }
 

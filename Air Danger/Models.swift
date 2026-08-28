@@ -4,11 +4,14 @@ struct DeviceRegistration: Codable, Equatable {
     let token: String
     let warnings: Bool
     let sound: String
+    let critical: Bool
+    let criticalVolume: Double
     let laStartToken: String?
     let laUpdateToken: String?
 
     enum CodingKeys: String, CodingKey {
-        case token, warnings, sound
+        case token, warnings, sound, critical
+        case criticalVolume = "critical_volume"
         case laStartToken = "la_start_token"
         case laUpdateToken = "la_update_token"
     }
@@ -17,11 +20,14 @@ struct DeviceRegistration: Codable, Equatable {
 struct DevicePrefs: Codable, Equatable {
     let warnings: Bool
     let sound: String
+    let critical: Bool
+    let criticalVolume: Double
     let laStartToken: String?
     let laUpdateToken: String?
 
     enum CodingKeys: String, CodingKey {
-        case warnings, sound
+        case warnings, sound, critical
+        case criticalVolume = "critical_volume"
         case laStartToken = "la_start_token"
         case laUpdateToken = "la_update_token"
     }

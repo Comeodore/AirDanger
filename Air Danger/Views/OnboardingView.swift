@@ -44,6 +44,13 @@ struct OnboardingView: View {
                         )
                 }
                 .buttonStyle(.plain)
+
+                Text("Окремо попросимо дозвіл на критичні сповіщення — щоб сигнал про підтверджений пуск пролунав навіть у беззвучному режимі та в «Не турбувати»")
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 8)
             }
         }
         .padding(.horizontal, 16)

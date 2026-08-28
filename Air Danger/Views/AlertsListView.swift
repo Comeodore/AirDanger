@@ -27,13 +27,6 @@ extension ThreatAlert {
         return String(collapsed.drop { !$0.isLetter && !$0.isNumber })
     }
 
-    var title: String {
-        if isAllClear {
-            return "Відбій"
-        }
-        return isInbound ? "\(typeName) — підтверджений пуск" : "\(typeName) — попередження"
-    }
-
     var iconName: String {
         if isAllClear {
             return "checkmark.shield"
@@ -64,24 +57,20 @@ struct AlertRow: View {
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(alert.tint)
                 }
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 3) {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text(alert.title)
-                        .font(.subheadline.weight(.semibold))
+                    Text(alert.displayText)
+                        .font(.subheadline)
                         .foregroundStyle(Color(.label))
+                        .lineLimit(textLineLimit)
                     Spacer(minLength: 0)
                     Text(KyivTime.rowLabel(for: alert.ts, now: now))
                         .font(.caption)
                         .foregroundStyle(Color(.tertiaryLabel))
                 }
-                Text(alert.displayText)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(textLineLimit)
                 Text(alert.channelName)
                     .font(.caption)
                     .foregroundStyle(Color(.tertiaryLabel))
-                    .padding(.top, 2)
             }
             .fixedSize(horizontal: false, vertical: true)
         }

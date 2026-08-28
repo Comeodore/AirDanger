@@ -22,6 +22,9 @@ final class AppModel {
 
     private static let alertsPage = 50
 
+    static let minCriticalVolume = 0.0
+    static let defaultCriticalVolume = 1.0
+
     private let api = APIClient()
     private let logger = Logger(subsystem: "comeodore.airdanger", category: "app")
     private let defaults = UserDefaults.standard
@@ -33,6 +36,11 @@ final class AppModel {
         alertSound = AlertSound.choices.contains { $0.file == storedSound }
             ? storedSound : "alert.caf"
         theme = AppTheme(rawValue: defaults.string(forKey: "theme") ?? "") ?? .system
+        criticalAlertsEnabled = defaults.bool(forKey: "criticalAlertsEnabled")
+        let storedVolume = defaults.object(forKey: "criticalVolume") as? Double
+            ?? Self.defaultCriticalVolume
+        criticalVolume = min(Self.defaultCriticalVolume,
+                             max(Self.minCriticalVolume, storedVolume))
     }
 
     var onboarded: Bool {
@@ -61,6 +69,14 @@ final class AppModel {
         didSet { defaults.set(theme.rawValue, forKey: "theme") }
     }
 
+    private(set) var criticalAlertsEnabled: Bool {
+        didSet { defaults.set(criticalAlertsEnabled, forKey: "criticalAlertsEnabled") }
+    }
+
+    var criticalVolume: Double {
+        didSet { defaults.set(criticalVolume, forKey: "criticalVolume") }
+    }
+
     func setWarnings(_ enabled: Bool) async {
         warningsEnabled = enabled
         defaults.set(true, forKey: "prefsDirty")
@@ -69,6 +85,11 @@ final class AppModel {
 
     func setSound(_ file: String) async {
         alertSound = file
+        defaults.set(true, forKey: "prefsDirty")
+        await syncPrefs()
+    }
+
+    func commitCriticalVolume() async {
         defaults.set(true, forKey: "prefsDirty")
         await syncPrefs()
     }
@@ -96,6 +117,8 @@ final class AppModel {
         DevicePrefs(
             warnings: warningsEnabled,
             sound: alertSound,
+            critical: criticalAlertsEnabled,
+            criticalVolume: criticalVolume,
             laStartToken: defaults.string(forKey: "laStartToken"),
             laUpdateToken: defaults.string(forKey: "laUpdateToken")
         )
@@ -162,16 +185,55 @@ final class AppModel {
         }
     }
 
+    @ObservationIgnored private var previewID: String?
+
+    @discardableResult
+    func previewSound(_ file: String) async -> Bool {
+        guard criticalAlertsEnabled else { return false }
+        let center = UNUserNotificationCenter.current()
+        if let previewID {
+            center.removePendingNotificationRequests(withIdentifiers: [previewID])
+            center.removeDeliveredNotifications(withIdentifiers: [previewID])
+        }
+        let content = UNMutableNotificationContent()
+        content.title = "Air Danger"
+        content.sound = UNNotificationSound.criticalSoundNamed(
+            UNNotificationSoundName(file),
+            withAudioVolume: Float(criticalVolume)
+        )
+        content.interruptionLevel = .critical
+        content.userInfo = ["test": true, "preview": true]
+        let id = "sound-preview-\(UUID().uuidString)"
+        previewID = id
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
+        do {
+            try await center.add(request)
+            return true
+        } catch {
+            logger.error("sound preview failed: \(error)")
+            return false
+        }
+    }
+
     func sendTestNotification() async {
         let center = UNUserNotificationCenter.current()
         if await center.notificationSettings().authorizationStatus == .notDetermined {
-            _ = try? await center.requestAuthorization(options: [.alert, .sound, .badge])
-            await refreshNotificationStatus()
+            await requestAuthorization()
         }
         let content = UNMutableNotificationContent()
         content.title = "Тестове сповіщення"
-        content.body = "Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка."
-        content.sound = UNNotificationSound(named: UNNotificationSoundName(alertSound))
+        if criticalAlertsEnabled {
+            content.body = "Так виглядатиме сповіщення про підтверджений пуск — воно лунає навіть у беззвучному режимі та в «Не турбувати»."
+            content.sound = UNNotificationSound.criticalSoundNamed(
+                UNNotificationSoundName(alertSound),
+                withAudioVolume: Float(criticalVolume)
+            )
+            content.interruptionLevel = .critical
+        } else {
+            content.body = "Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка."
+            content.sound = UNNotificationSound(named: UNNotificationSoundName(alertSound))
+            content.interruptionLevel = .timeSensitive
+        }
         content.userInfo = ["test": true]
         let request = UNNotificationRequest(
             identifier: "test-notification", content: content, trigger: nil
@@ -217,20 +279,33 @@ final class AppModel {
     #endif
 
     func enableNotifications() async {
-        do {
-            let center = UNUserNotificationCenter.current()
-            let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge])
-            notificationsEnabled = granted
-        } catch {
-            logger.error("notification authorization failed: \(error)")
-        }
+        await requestAuthorization()
         UIApplication.shared.registerForRemoteNotifications()
+    }
+
+    private func requestAuthorization() async {
+        let center = UNUserNotificationCenter.current()
+        do {
+            _ = try await center.requestAuthorization(
+                options: [.alert, .sound, .badge, .criticalAlert]
+            )
+        } catch {
+            logger.error("critical alert authorization failed: \(error)")
+            _ = try? await center.requestAuthorization(options: [.alert, .sound, .badge])
+        }
+        await refreshNotificationStatus()
     }
 
     func refreshNotificationStatus() async {
         let settings = await UNUserNotificationCenter.current().notificationSettings()
         notificationsEnabled = settings.authorizationStatus == .authorized
             || settings.authorizationStatus == .provisional
+        let critical = settings.criticalAlertSetting == .enabled
+        guard critical != criticalAlertsEnabled else { return }
+        criticalAlertsEnabled = critical
+        defaults.set(true, forKey: "prefsDirty")
+        logger.info("critical alerts \(critical ? "granted" : "revoked")")
+        await syncPrefs()
     }
 
     func handleDeviceToken(_ tokenData: Data) async {
@@ -255,6 +330,8 @@ final class AppModel {
             token: token,
             warnings: warningsEnabled,
             sound: alertSound,
+            critical: criticalAlertsEnabled,
+            criticalVolume: criticalVolume,
             laStartToken: defaults.string(forKey: "laStartToken"),
             laUpdateToken: defaults.string(forKey: "laUpdateToken")
         )

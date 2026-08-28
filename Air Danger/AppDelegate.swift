@@ -10,6 +10,10 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = self
+        let tabBar = UITabBarAppearance()
+        tabBar.configureWithDefaultBackground()
+        UITabBar.appearance().standardAppearance = tabBar
+        UITabBar.appearance().scrollEdgeAppearance = tabBar
         return true
     }
 
@@ -25,6 +29,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
+        if notification.request.content.userInfo["preview"] != nil {
+            return [.sound]
+        }
         if notification.request.content.userInfo["test"] == nil {
             Task { await AppModel.shared.refreshAlerts() }
         }

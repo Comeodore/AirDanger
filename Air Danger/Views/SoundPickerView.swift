@@ -7,6 +7,7 @@ struct SoundPickerView: View {
     @State private var player: AVAudioPlayer?
 
     var body: some View {
+        @Bindable var model = model
         ScrollView {
             VStack(spacing: 0) {
                 ForEach(Array(AlertSound.choices.enumerated()), id: \.element.id) { index, sound in
@@ -48,6 +49,18 @@ struct SoundPickerView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 32)
                 .padding(.top, 9)
+
+            volumeCard($model.criticalVolume)
+                .padding(.horizontal, 16)
+                .padding(.top, 18)
+
+            Text(volumeFootnote)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 32)
+                .padding(.top, 9)
+                .padding(.bottom, 16)
         }
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
@@ -55,7 +68,67 @@ struct SoundPickerView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    private func volumeCard(_ volume: Binding<Double>) -> some View {
+        VStack(spacing: 4) {
+            HStack(spacing: 12) {
+                Text("Гучність")
+                    .font(.body)
+                    .foregroundStyle(Color(.label))
+                Spacer(minLength: 0)
+                Text(volumeLabel)
+                    .font(.body)
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            }
+
+            HStack(spacing: 10) {
+                Image(systemName: "speaker.fill")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color(.tertiaryLabel))
+                Slider(
+                    value: volume,
+                    in: AppModel.minCriticalVolume...AppModel.defaultCriticalVolume
+                ) { editing in
+                    guard !editing else { return }
+                    Task { await model.commitCriticalVolume() }
+                    preview(model.alertSound)
+                }
+                Image(systemName: "speaker.wave.3.fill")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color(.tertiaryLabel))
+            }
+            .disabled(!model.criticalAlertsEnabled)
+            .opacity(model.criticalAlertsEnabled ? 1 : 0.4)
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 11)
+        .padding(.bottom, 9)
+        .background(
+            Color(.secondarySystemGroupedBackground),
+            in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
+        )
+    }
+
+    private var volumeLabel: String {
+        guard model.criticalAlertsEnabled else { return "недоступна" }
+        let percent = Int((model.criticalVolume * 100).rounded())
+        return percent == 0 ? "лише вібрація" : "\(percent)%"
+    }
+
+    private var volumeFootnote: String {
+        model.criticalAlertsEnabled
+            ? "Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності дзвінка, медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку, лише вібрацією."
+            : "Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа."
+    }
+
     private func preview(_ file: String) {
+        Task {
+            guard await model.previewSound(file) == false else { return }
+            playInApp(file)
+        }
+    }
+
+    private func playInApp(_ file: String) {
         guard let url = Bundle.main.url(forResource: file, withExtension: nil) else { return }
         try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.duckOthers])
         try? AVAudioSession.sharedInstance().setActive(true)
