@@ -9,6 +9,12 @@ struct SettingsView: View {
         URL(string: UIApplication.openNotificationSettingsURLString)!
     }
 
+    private var version: String {
+        let short = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—"
+        return "Версія \(short) (\(build))"
+    }
+
     private var criticalMissing: Bool {
         model.notificationsEnabled && !model.criticalAlertsEnabled
     }
@@ -45,7 +51,7 @@ struct SettingsView: View {
                 UnofficialSourceBanner()
                 statusCard
                 prefsCard
-                infoCard
+                versionLabel
             }
             .padding(.horizontal, 16)
             .padding(.top, 4)
@@ -190,12 +196,12 @@ struct SettingsView: View {
         )
     }
 
-    private var infoCard: some View {
-        navRow("Про застосунок") { AboutView() }
-            .background(
-                Color(.secondarySystemGroupedBackground),
-                in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
-            )
+    private var versionLabel: some View {
+        Text(version)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 4)
     }
 
     private func row(title: String, chevron: Bool) -> some View {
@@ -213,28 +219,6 @@ struct SettingsView: View {
         .padding(.horizontal, 16)
         .frame(minHeight: 48)
         .contentShape(Rectangle())
-    }
-
-    private func navRow(
-        _ title: String, @ViewBuilder destination: @escaping () -> some View
-    ) -> some View {
-        NavigationLink {
-            destination()
-        } label: {
-            HStack(spacing: 12) {
-                Text(title)
-                    .font(.body)
-                    .foregroundStyle(Color(.label))
-                Spacer(minLength: 0)
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(Color(.tertiaryLabel))
-            }
-            .padding(.horizontal, 16)
-            .frame(minHeight: 48)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
     }
 
     private var divider: some View {
