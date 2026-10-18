@@ -333,7 +333,9 @@ final class AppModel {
             critical: criticalAlertsEnabled,
             criticalVolume: criticalVolume,
             laStartToken: defaults.string(forKey: "laStartToken"),
-            laUpdateToken: defaults.string(forKey: "laUpdateToken")
+            laUpdateToken: defaults.string(forKey: "laUpdateToken"),
+            model: DeviceInfo.model,
+            iosVersion: DeviceInfo.iosVersion
         )
     }
 }
