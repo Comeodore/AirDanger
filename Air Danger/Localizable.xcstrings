@@ -1,0 +1,662 @@
+{
+  "sourceLanguage" : "uk",
+  "strings" : {
+    "Імпульс" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulse"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпульс"
+          }
+        }
+      }
+    },
+    "Без дозволу застосунок не попередить про пуск" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Without permission, the app can't warn you about a launch"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без дозволу застосунок не попередить про пуск"
+          }
+        }
+      }
+    },
+    "Версія %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@ (%@)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версія %@ (%@)"
+          }
+        }
+      }
+    },
+    "Вчора" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yesterday"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вчора"
+          }
+        }
+      }
+    },
+    "Гучність" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гучність"
+          }
+        }
+      }
+    },
+    "Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності дзвінка, медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку, лише вібрацією." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume of the critical alert for a confirmed launch. It doesn't depend on ringer volume, media volume or silent mode — the preview sounds exactly like the real alert. At zero, the alert arrives without sound, with vibration only."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності дзвінка, медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку, лише вібрацією."
+          }
+        }
+      }
+    },
+    "Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume can only be set for critical alerts — turn them on in iOS notification settings. Right now the preview plays at media volume."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа."
+          }
+        }
+      }
+    },
+    "Завжди реагуйте на офіційну повітряну тривогу та прямуйте в укриття" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Always respond to the official air raid alert and head to a shelter"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завжди реагуйте на офіційну повітряну тривогу та прямуйте в укриття"
+          }
+        }
+      }
+    },
+    "Загроз не зафіксовано" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Threats Recorded"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загроз не зафіксовано"
+          }
+        }
+      }
+    },
+    "Загрози" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Threats"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрози"
+          }
+        }
+      }
+    },
+    "Звук лунає при підтвердженому пуску та в тестовому сповіщенні. Торкніться, щоб прослухати." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The sound plays for a confirmed launch and in the test notification. Tap to listen."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звук лунає при підтвердженому пуску та в тестовому сповіщенні. Торкніться, щоб прослухати."
+          }
+        }
+      }
+    },
+    "Звук сигналу" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alert Sound"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звук сигналу"
+          }
+        }
+      }
+    },
+    "Критичні сповіщення вимкнені" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Critical alerts are off"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Критичні сповіщення вимкнені"
+          }
+        }
+      }
+    },
+    "Критичні сповіщення увімкнені" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Critical alerts are on"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Критичні сповіщення увімкнені"
+          }
+        }
+      }
+    },
+    "Налаштування" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштування"
+          }
+        }
+      }
+    },
+    "Налаштування сповіщень" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notification Settings"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштування сповіщень"
+          }
+        }
+      }
+    },
+    "Не вдалося завантажити останні загрози. Потягніть униз, щоб спробувати ще раз." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load the latest threats. Pull down to try again."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося завантажити останні загрози. Потягніть униз, щоб спробувати ще раз."
+          }
+        }
+      }
+    },
+    "Неофіційне джерело" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unofficial source"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неофіційне джерело"
+          }
+        }
+      }
+    },
+    "Окремо попросимо дозвіл на критичні сповіщення — щоб сигнал про підтверджений пуск пролунав навіть у беззвучному режимі та в «Не турбувати»" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We'll also ask for permission to send critical alerts, so a confirmed launch alert sounds even in silent mode and Do Not Disturb"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Окремо попросимо дозвіл на критичні сповіщення — щоб сигнал про підтверджений пуск пролунав навіть у беззвучному режимі та в «Не турбувати»"
+          }
+        }
+      }
+    },
+    "Оповіщення" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Announcement"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оповіщення"
+          }
+        }
+      }
+    },
+    "Попередження про загрозу" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Threat Warnings"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попередження про загрозу"
+          }
+        }
+      }
+    },
+    "Розпізнає балістичні загрози для Києва у повідомленнях моніторингових каналів і сповіщає за лічені секунди — коли рахунок іде на хвилини" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detects ballistic threats to Kyiv in monitoring channel posts and alerts you within seconds — when every minute counts"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розпізнає балістичні загрози для Києва у повідомленнях моніторингових каналів і сповіщає за лічені секунди — коли рахунок іде на хвилини"
+          }
+        }
+      }
+    },
+    "Світла" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Світла"
+          }
+        }
+      }
+    },
+    "Світла або темна тема застосунку. «Системна» повторює налаштування iOS." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light or dark app theme. “System” follows your iOS setting."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Світла або темна тема застосунку. «Системна» повторює налаштування iOS."
+          }
+        }
+      }
+    },
+    "Сигнал про підтверджений пуск лунає навіть у беззвучному режимі" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmed launch alerts sound even in silent mode"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сигнал про підтверджений пуск лунає навіть у беззвучному режимі"
+          }
+        }
+      }
+    },
+    "Системна" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Системна"
+          }
+        }
+      }
+    },
+    "Сповіщення вимкнені" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications are off"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сповіщення вимкнені"
+          }
+        }
+      }
+    },
+    "Стандартний" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стандартний"
+          }
+        }
+      }
+    },
+    "Стрічка недоступна" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feed Unavailable"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стрічка недоступна"
+          }
+        }
+      }
+    },
+    "Сьогодні" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сьогодні"
+          }
+        }
+      }
+    },
+    "Так виглядатиме сповіщення про підтверджений пуск — воно лунає навіть у беззвучному режимі та в «Не турбувати»." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is how a confirmed launch alert will look — it sounds even in silent mode and Do Not Disturb."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Так виглядатиме сповіщення про підтверджений пуск — воно лунає навіть у беззвучному режимі та в «Не турбувати»."
+          }
+        }
+      }
+    },
+    "Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is how a confirmed launch alert will look — with sound at your ringer volume."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка."
+          }
+        }
+      }
+    },
+    "Тема" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тема"
+          }
+        }
+      }
+    },
+    "Темна" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Темна"
+          }
+        }
+      }
+    },
+    "Тестове сповіщення" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test Notification"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тестове сповіщення"
+          }
+        }
+      }
+    },
+    "Тихі сповіщення про можливу загрозу. Підтверджені пуски надходять завжди" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silent notifications about a possible threat. Confirmed launches always come through"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тихі сповіщення про можливу загрозу. Підтверджені пуски надходять завжди"
+          }
+        }
+      }
+    },
+    "Увімкнути сповіщення" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Notifications"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкнути сповіщення"
+          }
+        }
+      }
+    },
+    "Щойно моніторингові канали повідомлять про загрозу для Києва, вона з’явиться тут." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As soon as monitoring channels report a threat to Kyiv, it will appear here."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Щойно моніторингові канали повідомлять про загрозу для Києва, вона з’явиться тут."
+          }
+        }
+      }
+    },
+    "лише вібрація" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vibration only"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лише вібрація"
+          }
+        }
+      }
+    },
+    "недоступна" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unavailable"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "недоступна"
+          }
+        }
+      }
+    },
+    "щойно" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "just now"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "щойно"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

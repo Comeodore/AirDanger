@@ -10,11 +10,11 @@ struct OnboardingView: View {
                     .frame(width: 76, height: 88)
 
                 VStack(spacing: 10) {
-                    Text("Air Danger")
+                    Text(verbatim: "Air Danger")
                         .font(.largeTitle.bold())
                         .tracking(-1)
                         .foregroundStyle(Color(.label))
-                    Text("Розпізнає балістичні загрози для Києва у повідомленнях моніторингових каналів і сповіщає за лічені секунди — коли рахунок іде на хвилини")
+                    Text(tr("Розпізнає балістичні загрози для Києва у повідомленнях моніторингових каналів і сповіщає за лічені секунди — коли рахунок іде на хвилини"))
                         .font(.callout)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
@@ -34,7 +34,7 @@ struct OnboardingView: View {
                         model.onboarded = true
                     }
                 } label: {
-                    Text("Увімкнути сповіщення")
+                    Text(tr("Увімкнути сповіщення"))
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, minHeight: 52)
@@ -45,7 +45,7 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(.plain)
 
-                Text("Окремо попросимо дозвіл на критичні сповіщення — щоб сигнал про підтверджений пуск пролунав навіть у беззвучному режимі та в «Не турбувати»")
+                Text(tr("Окремо попросимо дозвіл на критичні сповіщення — щоб сигнал про підтверджений пуск пролунав навіть у беззвучному режимі та в «Не турбувати»"))
                     .font(.footnote)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)

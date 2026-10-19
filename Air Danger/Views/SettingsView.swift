@@ -12,7 +12,7 @@ struct SettingsView: View {
     private var version: String {
         let short = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
         let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—"
-        return "Версія \(short) (\(build))"
+        return tr("Версія \(short) (\(build))")
     }
 
     private var criticalMissing: Bool {
@@ -30,18 +30,18 @@ struct SettingsView: View {
     }
 
     private var statusTitle: String {
-        if !model.notificationsEnabled { return "Сповіщення вимкнені" }
+        if !model.notificationsEnabled { return tr("Сповіщення вимкнені") }
         return model.criticalAlertsEnabled
-            ? "Критичні сповіщення увімкнені"
-            : "Критичні сповіщення вимкнені"
+            ? tr("Критичні сповіщення увімкнені")
+            : tr("Критичні сповіщення вимкнені")
     }
 
     private var statusDetail: String? {
         if !model.notificationsEnabled {
-            return "Без дозволу застосунок не попередить про пуск"
+            return tr("Без дозволу застосунок не попередить про пуск")
         }
         return model.criticalAlertsEnabled
-            ? "Сигнал про підтверджений пуск лунає навіть у беззвучному режимі"
+            ? tr("Сигнал про підтверджений пуск лунає навіть у беззвучному режимі")
             : nil
     }
 
@@ -59,7 +59,7 @@ struct SettingsView: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
-        .navigationTitle("Налаштування")
+        .navigationTitle(tr("Налаштування"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -88,7 +88,7 @@ struct SettingsView: View {
             divider
 
             Link(destination: settingsURL) {
-                row(title: "Налаштування сповіщень", chevron: true)
+                row(title: tr("Налаштування сповіщень"), chevron: true)
             }
             .buttonStyle(.plain)
 
@@ -104,7 +104,7 @@ struct SettingsView: View {
                 }
             } label: {
                 HStack(spacing: 12) {
-                    Text("Тестове сповіщення")
+                    Text(tr("Тестове сповіщення"))
                         .font(.body)
                         .foregroundStyle(Color.accentColor)
                     Spacer(minLength: 0)
@@ -126,10 +126,10 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("Попередження про загрозу")
+                    Text(tr("Попередження про загрозу"))
                         .font(.body)
                         .foregroundStyle(Color(.label))
-                    Text("Тихі сповіщення про можливу загрозу. Підтверджені пуски надходять завжди")
+                    Text(tr("Тихі сповіщення про можливу загрозу. Підтверджені пуски надходять завжди"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -150,7 +150,7 @@ struct SettingsView: View {
                 SoundPickerView()
             } label: {
                 HStack(spacing: 12) {
-                    Text("Звук сигналу")
+                    Text(tr("Звук сигналу"))
                         .font(.body)
                         .foregroundStyle(Color(.label))
                     Spacer(minLength: 0)
@@ -173,7 +173,7 @@ struct SettingsView: View {
                 ThemePickerView()
             } label: {
                 HStack(spacing: 12) {
-                    Text("Тема")
+                    Text(tr("Тема"))
                         .font(.body)
                         .foregroundStyle(Color(.label))
                     Spacer(minLength: 0)

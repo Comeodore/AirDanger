@@ -8,10 +8,10 @@ struct UnofficialSourceBanner: View {
                 .foregroundStyle(Palette.amberIcon)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("Неофіційне джерело")
+                Text(tr("Неофіційне джерело"))
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Palette.amberTitle)
-                Text("Завжди реагуйте на офіційну повітряну тривогу та прямуйте в укриття")
+                Text(tr("Завжди реагуйте на офіційну повітряну тривогу та прямуйте в укриття"))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }

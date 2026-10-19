@@ -22,9 +22,9 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var name: String {
         switch self {
-        case .system: "Системна"
-        case .light: "Світла"
-        case .dark: "Темна"
+        case .system: tr("Системна")
+        case .light: tr("Світла")
+        case .dark: tr("Темна")
         }
     }
 

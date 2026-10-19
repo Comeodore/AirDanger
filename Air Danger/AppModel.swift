@@ -221,16 +221,16 @@ final class AppModel {
             await requestAuthorization()
         }
         let content = UNMutableNotificationContent()
-        content.title = "Тестове сповіщення"
+        content.title = tr("Тестове сповіщення")
         if criticalAlertsEnabled {
-            content.body = "Так виглядатиме сповіщення про підтверджений пуск — воно лунає навіть у беззвучному режимі та в «Не турбувати»."
+            content.body = tr("Так виглядатиме сповіщення про підтверджений пуск — воно лунає навіть у беззвучному режимі та в «Не турбувати».")
             content.sound = UNNotificationSound.criticalSoundNamed(
                 UNNotificationSoundName(alertSound),
                 withAudioVolume: Float(criticalVolume)
             )
             content.interruptionLevel = .critical
         } else {
-            content.body = "Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка."
+            content.body = tr("Так виглядатиме сповіщення про підтверджений пуск — зі звуком на рівні гучності дзвінка.")
             content.sound = UNNotificationSound(named: UNNotificationSoundName(alertSound))
             content.interruptionLevel = .timeSensitive
         }

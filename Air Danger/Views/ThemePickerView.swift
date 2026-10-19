@@ -38,7 +38,7 @@ struct ThemePickerView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
-            Text("Світла або темна тема застосунку. «Системна» повторює налаштування iOS.")
+            Text(tr("Світла або темна тема застосунку. «Системна» повторює налаштування iOS."))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -47,7 +47,7 @@ struct ThemePickerView: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
-        .navigationTitle("Тема")
+        .navigationTitle(tr("Тема"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

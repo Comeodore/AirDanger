@@ -96,15 +96,15 @@ struct AlertsListView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .unavailable:
                 ContentUnavailableView(
-                    "Стрічка недоступна",
+                    tr("Стрічка недоступна"),
                     systemImage: "wifi.slash",
-                    description: Text("Не вдалося завантажити останні загрози. Потягніть униз, щоб спробувати ще раз.")
+                    description: Text(tr("Не вдалося завантажити останні загрози. Потягніть униз, щоб спробувати ще раз."))
                 )
             case .loaded(let alerts) where alerts.isEmpty:
                 ContentUnavailableView(
-                    "Загроз не зафіксовано",
+                    tr("Загроз не зафіксовано"),
                     systemImage: "checkmark.shield",
-                    description: Text("Щойно моніторингові канали повідомлять про загрозу для Києва, вона з’явиться тут.")
+                    description: Text(tr("Щойно моніторингові канали повідомлять про загрозу для Києва, вона з’явиться тут."))
                 )
             case .loaded(let alerts):
                 TimelineView(.everyMinute) { context in
@@ -132,7 +132,7 @@ struct AlertsListView: View {
         }
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .refreshable { await model.refreshAlerts() }
-        .navigationTitle("Загрози")
+        .navigationTitle(tr("Загрози"))
         .navigationBarTitleDisplayMode(.inline)
         .task {
             if model.alertsFeed == .loading {

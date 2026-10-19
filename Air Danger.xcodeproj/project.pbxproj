@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		40ADDA00000000000000000D /* AirDangerWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 40ADDA000000000000000003 /* AirDangerWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		40ADDA00000000000000000F /* ThreatActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADDA00000000000000000E /* ThreatActivityAttributes.swift */; };
+		40ADDA000000000000000011 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADDA000000000000000010 /* AppLanguage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		407BAE51301E581700822ECD /* AirDangerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirDangerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40ADDA000000000000000003 /* AirDangerWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AirDangerWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		40ADDA00000000000000000E /* ThreatActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThreatActivityAttributes.swift; path = "Air Danger/ThreatActivityAttributes.swift"; sourceTree = "<group>"; };
+		40ADDA000000000000000010 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppLanguage.swift; path = "Air Danger/AppLanguage.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -211,6 +213,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				uk,
+				en,
 				Base,
 			);
 			mainGroup = 407BAE19301E581500822ECD;
@@ -271,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40ADDA00000000000000000F /* ThreatActivityAttributes.swift in Sources */,
+				40ADDA000000000000000011 /* AppLanguage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,7 +422,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SupportFiles/AirDanger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -460,7 +464,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SupportFiles/AirDanger.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -499,7 +503,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SupportFiles/WidgetsInfo.plist;
@@ -527,7 +531,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SupportFiles/WidgetsInfo.plist;
@@ -556,7 +560,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -576,7 +580,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = VBV72WF24P;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

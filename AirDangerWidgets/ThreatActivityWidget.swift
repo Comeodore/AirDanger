@@ -21,16 +21,16 @@ extension ThreatActivityAttributes.ContentState {
 
     var isInbound: Bool { severity == "inbound" }
 
-    var typeName: String { type == "irbm" ? "МБР" : "Балістика" }
+    var typeName: String { type == "irbm" ? tr("МБР") : tr("Балістика") }
 
     var title: String {
         if isClear {
-            return "Відбій"
+            return tr("Відбій")
         }
         if isEnded {
-            return "Без нових сигналів"
+            return tr("Без нових сигналів")
         }
-        return isInbound ? "\(typeName) — підтверджений пуск" : "\(typeName) — попередження"
+        return isInbound ? tr("\(typeName) — підтверджений пуск") : tr("\(typeName) — попередження")
     }
 
     var displayText: String {
@@ -66,29 +66,19 @@ extension ThreatActivityAttributes.ContentState {
     }
 
     var countLabel: String {
-        let mod10 = count % 10
-        let mod100 = count % 100
-        let word: String
-        if mod10 == 1 && mod100 != 11 {
-            word = "сигнал"
-        } else if (2...4).contains(mod10) && !(12...14).contains(mod100) {
-            word = "сигнали"
-        } else {
-            word = "сигналів"
-        }
-        return "\(count) \(word)"
+        tr("\(count) сигналів")
     }
 
     var summary: String {
         if isClear || isEnded {
             let minutes = max(1, Int((Date.now.timeIntervalSince1970 - startedAt) / 60))
-            return "Тривало \(minutes) хв · \(countLabel)"
+            return tr("Тривало \(minutes) хв · \(countLabel)")
         }
         guard let lastAt else {
             return countLabel
         }
         let clock = kyivClock.string(from: Date(timeIntervalSince1970: lastAt))
-        return "\(countLabel) · останній \(clock)"
+        return tr("\(countLabel) · останній \(clock)")
     }
 
 }

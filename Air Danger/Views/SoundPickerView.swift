@@ -43,7 +43,7 @@ struct SoundPickerView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
-            Text("Звук лунає при підтвердженому пуску та в тестовому сповіщенні. Торкніться, щоб прослухати.")
+            Text(tr("Звук лунає при підтвердженому пуску та в тестовому сповіщенні. Торкніться, щоб прослухати."))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -64,14 +64,14 @@ struct SoundPickerView: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
-        .navigationTitle("Звук сигналу")
+        .navigationTitle(tr("Звук сигналу"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private func volumeCard(_ volume: Binding<Double>) -> some View {
         VStack(spacing: 4) {
             HStack(spacing: 12) {
-                Text("Гучність")
+                Text(tr("Гучність"))
                     .font(.body)
                     .foregroundStyle(Color(.label))
                 Spacer(minLength: 0)
@@ -110,15 +110,15 @@ struct SoundPickerView: View {
     }
 
     private var volumeLabel: String {
-        guard model.criticalAlertsEnabled else { return "недоступна" }
+        guard model.criticalAlertsEnabled else { return tr("недоступна") }
         let percent = Int((model.criticalVolume * 100).rounded())
-        return percent == 0 ? "лише вібрація" : "\(percent)%"
+        return percent == 0 ? tr("лише вібрація") : "\(percent)%"
     }
 
     private var volumeFootnote: String {
         model.criticalAlertsEnabled
-            ? "Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності дзвінка, медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку, лише вібрацією."
-            : "Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа."
+            ? tr("Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності дзвінка, медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку, лише вібрацією.")
+            : tr("Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа.")
     }
 
     private func preview(_ file: String) {

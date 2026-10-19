@@ -1,7 +1,7 @@
 import Foundation
 
 enum KyivTime {
-    static let locale = Locale(identifier: "uk_UA")
+    static let locale = AppLanguage.current.locale
     static let zone = TimeZone(identifier: "Europe/Kyiv") ?? .current
 
     static let calendar: Calendar = {
@@ -34,7 +34,7 @@ enum KyivTime {
     static func rowLabel(for date: Date, now: Date = .now) -> String {
         let age = now.timeIntervalSince(date)
         if age < 60 {
-            return "щойно"
+            return tr("щойно")
         }
         if age < 3600 {
             return relative.localizedString(for: date, relativeTo: now)
@@ -49,10 +49,10 @@ enum KyivTime {
     static func sectionTitle(for day: Date, now: Date = .now) -> String {
         let today = calendar.startOfDay(for: now)
         if day == today {
-            return "Сьогодні"
+            return tr("Сьогодні")
         }
         if day == calendar.date(byAdding: .day, value: -1, to: today) {
-            return "Вчора"
+            return tr("Вчора")
         }
         let daysBack = calendar.dateComponents([.day], from: day, to: today).day ?? 0
         if daysBack < 7 {

@@ -14,10 +14,10 @@ struct RootView: View {
         @Bindable var model = model
         TabView(selection: $model.selectedTab) {
             NavigationStack { AlertsListView() }
-                .tabItem { Label("Загрози", systemImage: "exclamationmark.triangle") }
+                .tabItem { Label(tr("Загрози"), systemImage: "exclamationmark.triangle") }
                 .tag(AppModel.Tab.threats)
             NavigationStack { SettingsView() }
-                .tabItem { Label("Налаштування", systemImage: "gearshape") }
+                .tabItem { Label(tr("Налаштування"), systemImage: "gearshape") }
                 .tag(AppModel.Tab.settings)
         }
         .task(id: "\(scenePhase)-\(model.onboarded)") {

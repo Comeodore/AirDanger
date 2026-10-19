@@ -75,9 +75,9 @@ struct AlertSound: Identifiable, Equatable {
     var id: String { file }
 
     static let choices = [
-        AlertSound(file: "alert.caf", name: "Стандартний"),
-        AlertSound(file: "pulse.caf", name: "Імпульс"),
-        AlertSound(file: "opovishchennia.caf", name: "Оповіщення"),
+        AlertSound(file: "alert.caf", name: tr("Стандартний")),
+        AlertSound(file: "pulse.caf", name: tr("Імпульс")),
+        AlertSound(file: "opovishchennia.caf", name: tr("Оповіщення")),
     ]
 
     static func name(of file: String) -> String {
