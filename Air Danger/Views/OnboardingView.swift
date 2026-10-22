@@ -55,6 +55,7 @@ struct OnboardingView: View {
         }
         .padding(.horizontal, 16)
         .padding(.top, 4)
+        .readableColumn(Palette.onboardingWidth)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .interactiveDismissDisabled()

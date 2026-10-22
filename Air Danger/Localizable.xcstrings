@@ -97,6 +97,22 @@
         }
       }
     },
+    "Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume of the critical alert for a confirmed launch. It doesn't depend on media volume or silent mode — the preview sounds exactly like the real alert. At zero, the alert arrives silently."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку."
+          }
+        }
+      }
+    },
     "Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа." : {
       "localizations" : {
         "en" : {
@@ -605,6 +621,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Щойно моніторингові канали повідомлять про загрозу для Києва, вона з’явиться тут."
+          }
+        }
+      }
+    },
+    "без звуку" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "silent"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "без звуку"
           }
         }
       }

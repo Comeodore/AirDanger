@@ -10,57 +10,60 @@ struct SoundPickerView: View {
         @Bindable var model = model
         ScrollView {
             VStack(spacing: 0) {
-                ForEach(Array(AlertSound.choices.enumerated()), id: \.element.id) { index, sound in
-                    if index > 0 {
-                        HairlineDivider()
-                    }
-                    Button {
-                        Task { await model.setSound(sound.file) }
-                        preview(sound.file)
-                    } label: {
-                        HStack(spacing: 12) {
-                            Text(sound.name)
-                                .font(.body)
-                                .foregroundStyle(Color(.label))
-                            Spacer(minLength: 0)
-                            if model.alertSound == sound.file {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 15, weight: .semibold))
-                                    .foregroundStyle(Color.accentColor)
-                            }
+                VStack(spacing: 0) {
+                    ForEach(Array(AlertSound.choices.enumerated()), id: \.element.id) { index, sound in
+                        if index > 0 {
+                            HairlineDivider()
                         }
-                        .padding(.horizontal, 16)
-                        .frame(minHeight: 48)
-                        .contentShape(Rectangle())
+                        Button {
+                            Task { await model.setSound(sound.file) }
+                            preview(sound.file)
+                        } label: {
+                            HStack(spacing: 12) {
+                                Text(sound.name)
+                                    .font(.body)
+                                    .foregroundStyle(Color(.label))
+                                Spacer(minLength: 0)
+                                if model.alertSound == sound.file {
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 15, weight: .semibold))
+                                        .foregroundStyle(Color.accentColor)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                            .frame(minHeight: 48)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
-            }
-            .background(
-                Color(.secondarySystemGroupedBackground),
-                in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
-            )
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-
-            Text(tr("Звук лунає при підтвердженому пуску та в тестовому сповіщенні. Торкніться, щоб прослухати."))
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 32)
-                .padding(.top, 9)
-
-            volumeCard($model.criticalVolume)
+                .background(
+                    Color(.secondarySystemGroupedBackground),
+                    in: RoundedRectangle(cornerRadius: Palette.cardRadius, style: .continuous)
+                )
                 .padding(.horizontal, 16)
-                .padding(.top, 18)
+                .padding(.top, 8)
 
-            Text(volumeFootnote)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 32)
-                .padding(.top, 9)
-                .padding(.bottom, 16)
+                Text(tr("Звук лунає при підтвердженому пуску та в тестовому сповіщенні. Торкніться, щоб прослухати."))
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 32)
+                    .padding(.top, 9)
+
+                volumeCard($model.criticalVolume)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 18)
+
+                Text(volumeFootnote)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 32)
+                    .padding(.top, 9)
+                    .padding(.bottom, 16)
+            }
+            .readableColumn()
         }
         .scrollBounceBehavior(.basedOnSize)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
@@ -109,16 +112,24 @@ struct SoundPickerView: View {
         )
     }
 
+    private var vibrates: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone
+    }
+
     private var volumeLabel: String {
         guard model.criticalAlertsEnabled else { return tr("недоступна") }
         let percent = Int((model.criticalVolume * 100).rounded())
-        return percent == 0 ? tr("лише вібрація") : "\(percent)%"
+        guard percent == 0 else { return "\(percent)%" }
+        return vibrates ? tr("лише вібрація") : tr("без звуку")
     }
 
     private var volumeFootnote: String {
-        model.criticalAlertsEnabled
+        guard model.criticalAlertsEnabled else {
+            return tr("Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа.")
+        }
+        return vibrates
             ? tr("Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності дзвінка, медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку, лише вібрацією.")
-            : tr("Гучністю можна керувати лише для критичних сповіщень — увімкніть їх у налаштуваннях сповіщень iOS. Зараз прослуховування йде на гучності медіа.")
+            : tr("Гучність критичного сповіщення про підтверджений пуск. Не залежить від гучності медіа та беззвучного режиму — прослуховування звучить рівно так, як прозвучить сигнал. На нулі сповіщення надійде без звуку.")
     }
 
     private func preview(_ file: String) {

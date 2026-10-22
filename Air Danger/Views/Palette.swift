@@ -37,6 +37,13 @@ enum AppTheme: String, CaseIterable, Identifiable {
     }
 }
 
+extension View {
+    func readableColumn(_ width: CGFloat = Palette.columnWidth) -> some View {
+        frame(maxWidth: width)
+            .frame(maxWidth: .infinity)
+    }
+}
+
 struct HairlineDivider: View {
     @Environment(\.displayScale) private var scale
 
@@ -58,6 +65,8 @@ enum Palette {
 
     static let cardRadius: CGFloat = 22
     static let buttonRadius: CGFloat = 16
+    static let columnWidth: CGFloat = 640
+    static let onboardingWidth: CGFloat = 480
 
     private static func adaptive(dark: Color, light: Color) -> Color {
         Color(uiColor: UIColor { traits in
