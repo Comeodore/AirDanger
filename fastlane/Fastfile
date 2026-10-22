@@ -15,7 +15,7 @@ TEAM_ID = "VBV72WF24P"
 ARCHIVE_DIR = File.join(REPO_ROOT, "build", "appstore")
 
 platform :ios do
-  desc "Archive a signed Release build and upload it to TestFlight (internal). Options: build, version"
+  desc "Archive a signed Release build and upload it to TestFlight (internal + external). Options: build, version, changelog"
   lane :beta do |options|
     key = asc_api_key
     settings = []
@@ -42,11 +42,30 @@ platform :ios do
       api_key: key,
       ipa: ipa,
       app_identifier: APP_IDENTIFIER,
-      changelog: default_changelog,
-      skip_waiting_for_build_processing: true
+      changelog: options[:changelog] || default_changelog,
+      notify_external_testers: true
     )
-    UI.success("Uploaded #{ipa} to TestFlight (internal)")
+    send_to_external_groups(get_ipa_info_plist_value(ipa: ipa, key: "CFBundleVersion"))
+    UI.success("Uploaded #{ipa} to TestFlight (internal + external)")
   end
+
+  desc "Send an already uploaded build to the external TestFlight groups. Options: build"
+  lane :external do |options|
+    UI.user_error!("Pass the build number: fastlane external build:25 --env appstore") unless options[:build]
+    asc_api_key
+    send_to_external_groups(options[:build].to_s)
+  end
+end
+
+def send_to_external_groups(build_number)
+  app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
+  build = Spaceship::ConnectAPI::Build.all(app_id: app.id, build_number: build_number, processing_states: "VALID", limit: 1).first
+  UI.user_error!("Build #{build_number} is not processed in App Store Connect") if build.nil?
+  groups = app.get_beta_groups(filter: { isInternalGroup: false })
+  UI.user_error!("No external TestFlight group for #{APP_IDENTIFIER}") if groups.empty?
+  build.post_beta_app_review_submission if build.ready_for_beta_submission?
+  build.add_beta_groups(beta_groups: groups)
+  UI.success("Build #{build_number} sent to external groups: #{groups.map(&:name).join(', ')}")
 end
 
 def asc_api_key
